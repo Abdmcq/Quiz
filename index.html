@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار التشخيص الطبي</title>
+    <!-- تحميل مكتبة Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- خط Cairo للغة العربية و Inter للوجو الإنجليزي -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Inter:wght@900&display=swap');
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f3f4f6; /* خلفية رمادية فاتحة */
+        }
+        .logo-font {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* تنسيق خاص للوحة البداية */
+        .typing-container {
+            --chars: 17; /* طول النص: "Abdulrahman Hasan" */
+            width: calc(var(--chars) * 1ch); /* عرض النص الكامل */
+            overflow: hidden;
+            white-space: nowrap;
+            display: inline-block;
+            border-right: .15em solid #4F46E5; /* المؤشر الوامض بلون Indigo */
+            
+            /* دورة مستمرة: كتابة -> توقف -> مسح */
+            animation: type-delete-cycle 8s steps(var(--chars)) infinite, 
+                       blink 0.5s step-end infinite;
+        }
+
+        @keyframes type-delete-cycle {
+            /* 0% - 40%: Typing */
+            0% { width: 0; } 
+            40% { width: calc(var(--chars) * 1ch); } 
+            
+            /* 40% - 60%: Pause */
+            60% { width: calc(var(--chars) * 1ch); } 
+
+            /* 60% - 100%: Deleting (and back to 0% for restart) */
+            100% { width: 0; } 
+        }
+        
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: #4F46E5; }
+        }
+
+        /* تخصيص شريط التقدم ليكون متناسقاً مع لون المشغل */
+        input[type="range"]::-webkit-slider-thumb {
+            background: #14B8A6; /* Teal-500 */
+        }
+        input[type="range"]::-moz-range-thumb {
+            background: #14B8A6; /* Teal-500 */
+        }
+        .accent-teal-500 {
+            accent-color: #14B8A6; /* Teal-500 */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- العنصر الرئيسي الذي يحمل جميع الشاشات -->
+    <div id="app" class="flex-grow flex flex-col">
+        <!-- يتم تحميل محتوى الشاشات هنا بواسطة JavaScript -->
+    </div>
+
+    <!-- شريط الحقوق الثابت في الأسفل -->
+    <footer class="bg-gray-800 text-white text-center p-3 text-sm">
+        <p>اعداد عبدالرحمن حسن</p>
+    </footer>
+
+    <script>
+        // قائمة التشغيل للأغاني (تم تحديثها)
+        const playlist = [
+            { id: 1, src: "https://files.catbox.moe/q2lyxo.mp3", title: "راغب علامة & اليسا" },
+            { id: 2, src: "https://files.catbox.moe/xbgi3g.mp3", title: "احلفك بالمحبة" },
+            { id: 3, src: "https://files.catbox.moe/0l8qga.mp3", title: "يا هوى روح - وائل كافوري" },
+            { id: 4, src: "https://files.catbox.moe/t5x3ri.mp3", title: "وائل كافوري" },
+            { id: 5, src: "https://files.catbox.moe/i7huol.mp3", title: "نانسي عجرم" },
+            { id: 6, src: "https://files.catbox.moe/nvbzlz.mp3", title: "هيثم يوسف" }
+        ];
+
+        // بيانات الاختبار (تم تحديثها بالكامل)
+        const quizData = [
+            { id: 1, image: "https://files.catbox.moe/6jal94.jpg", correctDiagnosis: "Z line and diaphragm indentation" },
+            { id: 2, image: "https://files.catbox.moe/b3mn2l.jpg", correctDiagnosis: "Distal eaophagus" },
+            { id: 3, image: "https://files.catbox.moe/wi2kur.jpg", correctDiagnosis: "Gastric antrum" },
+            { id: 4, image: "https://files.catbox.moe/8ytqec.jpg", correctDiagnosis: "Gastric ulcer" },
+            { id: 5, image: "https://files.catbox.moe/c2nt4s.png", correctDiagnosis: "Gastric ulcer" },
+            { id: 6, image: "https://files.catbox.moe/icrzfm.jpg", correctDiagnosis: "DUODENUM ulcer" },
+            { id: 7, image: "https://files.catbox.moe/itxlzk.jpg", correctDiagnosis: "Gastric ulcer" },
+            { id: 8, image: "https://files.catbox.moe/5q1l08.jpg", correctDiagnosis: "Gastric ulcer" },
+            { id: 9, image: "https://files.catbox.moe/zj837w.jpg", correctDiagnosis: "Chronic renal failure" },
+            { id: 10, image: "https://files.catbox.moe/1xtp5l.jpg", correctDiagnosis: "Polycystic kideny" },
+            { id: 11, image: "https://files.catbox.moe/s4pn3z.jpg", correctDiagnosis: "Bilateral renal stones" },
+            { id: 12, image: "https://files.catbox.moe/nhqizs.jpg", correctDiagnosis: "Hydronephrosis" },
+            { id: 13, image: "https://files.catbox.moe/zg4eo8.jpg", correctDiagnosis: "Prostatic hypertrophy" },
+            { id: 14, image: "https://files.catbox.moe/8k1b8d.jpg", correctDiagnosis: "Blocked lumen in branch of letf coronary artery" },
+            { id: 15, image: "https://files.catbox.moe/wjzbal.jpg", correctDiagnosis: "Vasopasm or endothelial dysfunction" },
+            { id: 16, image: "https://files.catbox.moe/gxpoxm.jpg", correctDiagnosis: "Normal sinus rhythm" },
+            { id: 17, image: "https://files.catbox.moe/g5gthv.jpg", correctDiagnosis: "ST depression (Angina pectoris)" },
+            { id: 18, image: "https://files.catbox.moe/ursapv.jpg", correctDiagnosis: "Jaundic" },
+            { id: 19, image: "https://files.catbox.moe/2zsa9j.jpg", correctDiagnosis: "يدرس على الملزمة" },
+            { id: 20, image: "https://files.catbox.moe/aw4rou.jpg", correctDiagnosis: "Myocardial infarction" },
+            { id: 21, image: "https://files.catbox.moe/gw8die.jpg", correctDiagnosis: "Myocardial infarction" },
+            { id: 22, image: "https://files.catbox.moe/3h1ifh.jpg", correctDiagnosis: "Angina pectoris" },
+            { id: 23, image: "https://files.catbox.moe/jqs6xt.jpg", correctDiagnosis: "Myocardial infraction" },
+            { id: 24, image: "https://files.catbox.moe/fb9oid.jpg", correctDiagnosis: "Myocardial infraction" }
+        ];
+
+        let results = {}; // لحفظ نتائج التشخيص
+        const appDiv = document.getElementById('app');
+        
+        // متغيرات مشغل الموسيقى
+        let audioPlayer = new Audio();
+        let currentTrackIndex = 0;
+        let isPlayerInitialized = false;
+        
+        // دالة لخلط عناصر المصفوفة (لمنع التسلسل)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // ----------------------------------------------------------------
+        // وظائف مشغل الموسيقى
+        // ----------------------------------------------------------------
+
+        function initializeAudioPlayer() {
+            if (isPlayerInitialized) return;
+            
+            // تحميل المسار الأول
+            audioPlayer.src = playlist[currentTrackIndex].src;
+            
+            // تحديث واجهة المشغل عند تحميل البيانات
+            audioPlayer.addEventListener('loadedmetadata', updatePlayerUI);
+            
+            // الانتقال التلقائي للمسار التالي عند انتهاء الحالي
+            audioPlayer.addEventListener('ended', playNext);
+
+            // تحديث شريط التقدم والوقت بشكل مستمر
+            audioPlayer.addEventListener('timeupdate', () => {
+                const currentTimeDisplay = document.getElementById('currentTime');
+                const durationDisplay = document.getElementById('duration');
+                const progressBar = document.getElementById('progressBar');
+                
+                if (currentTimeDisplay) {
+                    currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
+                }
+                if (progressBar && !isNaN(audioPlayer.duration) && audioPlayer.duration > 0) {
+                    const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                    progressBar.value = percentage;
+                }
+            });
+            
+            audioPlayer.addEventListener('play', updatePlayerUI);
+            audioPlayer.addEventListener('pause', updatePlayerUI);
+
+            isPlayerInitialized = true;
+        }
+
+        /**
+         * تحديث واجهة مشغل الموسيقى (شريط التقدم، المدة، العنوان)
+         */
+        function updatePlayerUI() {
+            const trackTitle = document.getElementById('trackTitle');
+            const playPauseButton = document.getElementById('playPauseButton');
+            const durationDisplay = document.getElementById('duration');
+
+            if (trackTitle) {
+                trackTitle.textContent = playlist[currentTrackIndex].title;
+            }
+            if (durationDisplay && !isNaN(audioPlayer.duration)) {
+                durationDisplay.textContent = formatTime(audioPlayer.duration);
+            }
+            
+            // تحديث أيقونة زر التشغيل/الإيقاف
+            if (playPauseButton) {
+                playPauseButton.innerHTML = audioPlayer.paused ? 
+                    `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19L18 12L6 5V19Z"/></svg>` :
+                    `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19H8V5H6V19ZM16 5V19H18V5H16Z"/></svg>`;
+            }
+        }
+        
+        /**
+         * تشغيل أو إيقاف مؤقت للموسيقى
+         */
+        function togglePlayPause() {
+            if (audioPlayer.paused) {
+                audioPlayer.play().catch(e => console.error("Error playing audio:", e));
+            } else {
+                audioPlayer.pause();
+            }
+            updatePlayerUI();
+        }
+
+        /**
+         * الانتقال إلى المسار التالي
+         */
+        function playNext() {
+            audioPlayer.pause();
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            audioPlayer.src = playlist[currentTrackIndex].src;
+            audioPlayer.load();
+            audioPlayer.play().catch(e => console.error("Error playing audio:", e));
+            updatePlayerUI();
+        }
+
+        /**
+         * الانتقال إلى المسار السابق
+         */
+        function playPrev() {
+            audioPlayer.pause();
+            currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length; 
+            audioPlayer.src = playlist[currentTrackIndex].src;
+            audioPlayer.load();
+            audioPlayer.play().catch(e => console.error("Error playing audio:", e));
+            updatePlayerUI();
+        }
+
+        /**
+         * التحكم في شريط التقدم (Seeking)
+         */
+        function seek(value) {
+            if (!isNaN(audioPlayer.duration)) {
+                audioPlayer.currentTime = (value / 100) * audioPlayer.duration;
+            }
+        }
+        
+        /**
+         * التقديم أو التأخير في المسار
+         */
+        function skipTime(time) {
+            audioPlayer.currentTime += time;
+        }
+
+        /**
+         * تحويل الثواني إلى تنسيق (دقيقة:ثانية)
+         */
+        function formatTime(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
+        
+        // ----------------------------------------------------------------
+        // 1. شاشة البوابة (Gate Screen)
+        // ----------------------------------------------------------------
+
+        function renderGateScreen() {
+            // للتأكد من إيقاف أي موسيقى عند العودة لشاشة البداية
+            if (isPlayerInitialized && !audioPlayer.paused) {
+                audioPlayer.pause();
+            }
+
+            // النص الإنجليزي للوجو المتحرك
+            const typingText = "Abdulrahman Hasan"; 
+            
+            appDiv.innerHTML = `
+                <div class="flex-grow flex items-center justify-center p-4">
+                    <div class="bg-white shadow-2xl rounded-xl p-8 max-w-sm md:max-w-md w-full text-center border-t-4 border-indigo-600">
+                        
+                        <!-- اللوغو المتحرك (Animated Logo) -->
+                        <div class="mb-8 h-6 flex justify-center">
+                            <h2 class="text-xl text-indigo-700 font-extrabold logo-font typing-container">
+                                ${typingText}
+                            </h2>
+                        </div>
+                        
+                        <!-- الرسالة الرئيسية -->
+                        <h1 class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-6 leading-relaxed">
+                            يارب ينجح عبدالرحمن حسن بالتخدير والعناية
+                        </h1>
+                        
+                        <!-- أزرار الدخول -->
+                        <div class="space-y-4 mb-8">
+                            <button onclick="renderQuizScreen()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-[1.02] shadow-lg">
+                                آمين (للدخول)
+                            </button>
+                            <button onclick="renderFailureScreen()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-[1.02] shadow-lg">
+                                ان شاء الله ماينجح
+                            </button>
+                        </div>
+
+                        <!-- معرفات التواصل -->
+                        <div class="pt-4 border-t border-gray-200">
+                            <h3 class="text-base font-bold text-gray-700 mb-4">
+                                للاستفسارات :
+                            </h3>
+                            <!-- SVG for Telegram icon (Hidden) -->
+                            <svg class="hidden">
+                                <symbol id="telegram-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M18.36 5.86l-1.57 7.03s-.18.84-.71.51c-.53-.33-4.88-3.08-5.32-3.35-.44-.26-.85-.06-.61.35.24.41 1.76 2.19 1.76 2.19l.13.15c.18.2.14.47-.08.57-.22.11-4.72 2.92-5.46 3.42-.74.5-.83.65-1.55.22-.71-.44-2.28-1.56-2.28-1.56l-.14-.08s-.5-.32-.23-.84c.27-.52 2.58-2.6 3.51-3.48 0 0 .52-.5.52-1.35v-6.9l.06-.52s.06-.52.54-.34c.48.18 1.47 1.05 4.3 3.65.17.18.25.13.31-.07.06-.2-.3-.9-.45-1.61-.15-.7-.27-1.3-.29-1.39l-.02-.08c-.08-.34.19-.51.4-.4.21.11 5.92 3.84 5.92 3.84z"/>
+                                </symbol>
+                            </svg>
+                            <div class="flex flex-wrap justify-center gap-3 text-sm">
+                                <!-- 1. التلكرام @ll7ddd -->
+                                <a href="https://t.me/ll7ddd" target="_blank" class="flex items-center p-2 bg-indigo-100 rounded-full hover:bg-indigo-200 transition duration-150 shadow-sm">
+                                    <svg class="w-4 h-4 text-blue-500 ml-1"><use xlink:href="#telegram-icon"></use></svg>
+                                    <span class="font-semibold text-gray-800 tracking-wide">@ll7ddd</span>
+                                </a>
+
+                                <!-- 2. القناة @ans24h -->
+                                <a href="https://t.me/ans24h" target="_blank" class="flex items-center p-2 bg-indigo-100 rounded-full hover:bg-indigo-200 transition duration-150 shadow-sm">
+                                    <svg class="w-4 h-4 text-blue-500 ml-1"><use xlink:href="#telegram-icon"></use></svg>
+                                    <span class="font-semibold text-gray-800">القناة: @ans24h</span>
+                                </a>
+
+                                <!-- 3. بوت المحاضرات @Ans2co1bot -->
+                                <a href="https://t.me/Ans2co1bot" target="_blank" class="flex items-center p-2 bg-indigo-100 rounded-full hover:bg-indigo-200 transition duration-150 shadow-sm">
+                                    <svg class="w-4 h-4 text-blue-500 ml-1"><use xlink:href="#telegram-icon"></use></svg>
+                                    <span class="font-semibold text-gray-800">البوت: @Ans2co1bot</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ----------------------------------------------------------------
+        // 2. شاشة الرفض (Failure Screen) - تم حذف شعار الديمقراطية قرارنا
+        // ----------------------------------------------------------------
+
+        function renderFailureScreen() {
+            // للتأكد من إيقاف أي موسيقى عند العودة لشاشة البداية
+            if (isPlayerInitialized && !audioPlayer.paused) {
+                audioPlayer.pause();
+            }
+
+            appDiv.innerHTML = `
+                <div class="flex-grow flex items-center justify-center p-4">
+                    <div class="bg-white shadow-xl rounded-xl p-8 max-w-md w-full text-center border-t-4 border-red-600">
+                        <svg class="mx-auto h-16 w-16 text-red-500 mb-4 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.332 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        <h1 class="text-3xl font-extrabold text-red-700 mb-4">
+                            للأسف!
+                        </h1>
+                        <p class="text-xl text-gray-700 mb-6">
+                            ارجع افتح الموقع مرة ثانية واختار آمين
+                        </p>
+                        <button onclick="renderGateScreen()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-md">
+                            العودة إلى البداية
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ----------------------------------------------------------------
+        // 3. شاشة الاختبار الرئيسية (Quiz Screen)
+        // ----------------------------------------------------------------
+
+        function renderQuizScreen() {
+            // تهيئة المشغل لأول مرة
+            initializeAudioPlayer();
+            
+            // خلط ترتيب التشخيصات عشوائياً قبل العرض
+            shuffleArray(quizData); 
+
+            let quizHTML = quizData.map(item => `
+                <div id="card-${item.id}" class="bg-white shadow-lg rounded-xl p-5 mb-8 transition-shadow duration-300 hover:shadow-xl border border-gray-100">
+                    <h2 class="text-xl font-semibold text-indigo-700 mb-4 border-b pb-2">
+                        صورة التشخيص #${item.id}
+                    </h2>
+
+                    <!-- الصورة التشخيصية -->
+                    <div class="w-full flex justify-center mb-6">
+                        <img src="${item.image}" alt="صورة تشخيص ${item.id}"
+                             class="rounded-lg shadow-md max-w-full h-auto object-cover"
+                             onerror="this.onerror=null; this.src='https://placehold.co/300x200/CCCCCC/6366F1?text=خطأ+في+تحميل+الصورة';" />
+                    </div>
+
+                    <!-- حقل إدخال التشخيص -->
+                    <div class="mb-4">
+                        <label for="diagnosis-${item.id}" class="block text-gray-700 font-medium mb-2">
+                            اكتب التشخيص هنا
+                        </label>
+                        <input type="text" id="diagnosis-${item.id}"
+                               class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-indigo-500 transition duration-150"
+                               placeholder="اكتب التشخيص هنا"
+                               oninput="clearStatus(${item.id})">
+                    </div>
+
+                    <!-- زر الفحص -->
+                    <button onclick="checkDiagnosis(${item.id}, '${item.correctDiagnosis.replace(/'/g, "\\'")}')"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition duration-300 transform hover:scale-[1.01] shadow-md">
+                        فحص التشخيص
+                    </button>
+
+                    <!-- رسالة النتيجة -->
+                    <div id="status-${item.id}" class="mt-4 p-3 rounded-lg hidden transition-all duration-500 ease-in-out">
+                        <!-- محتوى النتيجة هنا -->
+                    </div>
+                </div>
+            `).join('');
+
+            appDiv.innerHTML = `
+                <!-- رأس الصفحة - اللوغو الإنجليزي -->
+                <header class="bg-white shadow-md p-4 mb-4">
+                    <div class="container mx-auto max-w-4xl text-center">
+                        <h1 class="text-2xl md:text-3xl font-extrabold text-gray-800 logo-font uppercase tracking-wider">
+                             Abdulrahman Hassan
+                        </h1>
+                    </div>
+                </header>
+
+                <!-- محتوى الاختبار -->
+                <main class="container mx-auto max-w-4xl p-4 md:p-8 flex-grow pt-4">
+
+                    <!-- مشغل الموسيقى (لون Teal) -->
+                    <div class="bg-white shadow-xl rounded-xl p-4 mb-8 border-t-4 border-teal-500">
+                        <h2 class="text-center text-2xl font-bold text-gray-800 mb-2">
+                            غير مزاجك/ج اثناء التشخيص
+                        </h2>
+                        
+                        <!-- واجهة المشغل -->
+                        <div class="flex flex-col space-y-3">
+                            <!-- اسم المسار -->
+                            <p id="trackTitle" class="text-lg font-semibold text-teal-600 text-center truncate">...</p>
+                            
+                            <!-- تلميح بسيط لتغيير الأغنية -->
+                            <p class="text-xs text-gray-500 text-center -mt-2">
+                                استخدم زري <span class="text-teal-500 font-bold">السابق</span> و <span class="text-teal-500 font-bold">التالي</span> لتغيير الأغنية.
+                            </p>
+
+                            <!-- شريط التقدم والوقت -->
+                            <div class="flex items-center space-x-2 w-full" dir="ltr">
+                                <span id="currentTime" class="text-sm text-gray-600 min-w-[30px] text-right">0:00</span>
+                                <input type="range" id="progressBar" min="0" max="100" value="0" step="0.1" 
+                                       onchange="seek(this.value)"
+                                       class="flex-grow h-1 bg-gray-300 rounded-lg appearance-none cursor-pointer range-lg accent-teal-500">
+                                <span id="duration" class="text-sm text-gray-600 min-w-[30px] text-left">0:00</span>
+                            </div>
+
+                            <!-- أزرار التحكم -->
+                            <div class="flex justify-center items-center space-x-4">
+                                <!-- زر التقديم -10 ثواني -->
+                                <button onclick="skipTime(-10)" class="p-2 text-teal-500 hover:text-teal-700 transition duration-150 rounded-full bg-teal-100 hover:bg-teal-200" title="تأخير 10 ثواني">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21l9-5-9-5-9 5 9 5z"></path></svg>
+                                </button>
+                                
+                                <!-- زر السابق -->
+                                <button onclick="playPrev()" class="p-2 text-gray-600 hover:text-teal-500 transition duration-150">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18 19L18 5L15 8V16L18 19ZM6 12L15 5V19L6 12Z"/></svg>
+                                </button>
+                                
+                                <!-- زر التشغيل/الإيقاف -->
+                                <button id="playPauseButton" onclick="togglePlayPause()" class="p-3 bg-teal-500 text-white rounded-full shadow-lg hover:bg-teal-600 transition duration-150 transform hover:scale-105">
+                                    <!-- يتم تحديث محتوى SVG بواسطة JS -->
+                                </button>
+
+                                <!-- زر التالي -->
+                                <button onclick="playNext()" class="p-2 text-gray-600 hover:text-teal-500 transition duration-150">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19L6 5L9 8V16L6 19ZM18 12L9 19V5L18 12Z"/></svg>
+                                </button>
+
+                                <!-- زر التقديم +10 ثواني -->
+                                <button onclick="skipTime(10)" class="p-2 text-teal-500 hover:text-teal-700 transition duration-150 rounded-full bg-teal-100 hover:bg-teal-200" title="تقديم 10 ثواني">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21l9-5-9-5-9 5 9 5z"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- نهاية مشغل الموسيقى -->
+
+                    <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+                        اختبار تشخيص الصور
+                    </h2>
+
+                    <div class="grid gap-8 md:grid-cols-2">
+                        ${quizHTML}
+                    </div>
+
+                    <div id="quizSummary" class="mt-10 p-5 bg-yellow-100 border-l-4 border-yellow-500 rounded-lg text-center font-medium text-gray-700 hidden">
+                        <!-- ملخص النتائج يظهر هنا -->
+                    </div>
+                </main>
+            `;
+            // تحديث واجهة المشغل عند عرض الصفحة
+            updatePlayerUI();
+        }
+
+        /**
+         * دالة لفحص التشخيص المُدخل.
+         */
+        function checkDiagnosis(id, correctDiagnosis) {
+            const inputElement = document.getElementById(`diagnosis-${id}`);
+            const statusDiv = document.getElementById(`status-${id}`);
+            const cardDiv = document.getElementById(`card-${id}`);
+            const userInput = inputElement.value.trim();
+
+            if (!userInput) {
+                statusDiv.className = 'mt-4 p-3 rounded-lg bg-red-100 text-red-800 block';
+                statusDiv.innerHTML = `<p class="font-bold">الرجاء إدخال تشخيص أولاً.</p>`;
+                return;
+            }
+
+            // تطبيع النص لإجراء مقارنة مرنة (دون حساسية لحالة الأحرف أو المسافات)
+            const normalize = (text) => text.toLowerCase().replace(/[\s\W_]/g, '').trim(); 
+            const normalizedCorrect = normalize(correctDiagnosis);
+            const normalizedUser = normalize(userInput);
+
+            let isCorrect = false;
+
+            // منطق المقارنة: صحيح إذا كان الإدخال يطابق التشخيص الصحيح
+            if (normalizedUser === normalizedCorrect) {
+                 isCorrect = true;
+            } else {
+                 // للسماح ببعض التسامح في الإدخالات الطويلة
+                 if (normalizedCorrect.includes(normalizedUser) && normalizedUser.length > 5) {
+                    isCorrect = true;
+                 }
+            }
+
+
+            // عرض النتيجة
+            if (isCorrect) {
+                results[id] = true;
+                statusDiv.className = 'mt-4 p-3 rounded-lg bg-green-100 text-green-800 block border-l-4 border-green-500';
+                statusDiv.innerHTML = `
+                    <p class="font-bold flex items-center">
+                        <span class="text-2xl ml-2">✅</span> أحسنت! التشخيص صحيح.
+                    </p>
+                `;
+                cardDiv.classList.add('opacity-70', 'pointer-events-none');
+                inputElement.disabled = true;
+            } else {
+                results[id] = false;
+                statusDiv.className = 'mt-4 p-3 rounded-lg bg-red-100 text-red-800 block border-l-4 border-red-500';
+                statusDiv.innerHTML = `
+                    <p class="font-bold flex items-center mb-1">
+                        <span class="text-2xl ml-2">❌</span> التشخيص خاطئ.
+                    </p>
+                    <p>
+                        <span class="font-semibold">التشخيص الصحيح هو:</span> <span class="text-red-900">${correctDiagnosis}</span>
+                    </p>
+                `;
+            }
+
+            updateQuizSummary();
+        }
+
+        /**
+         * دالة لمسح رسالة الحالة عند التعديل في حقل الإدخال.
+         */
+        function clearStatus(id) {
+            const statusDiv = document.getElementById(`status-${id}`);
+            statusDiv.classList.add('hidden');
+        }
+
+        /**
+         * دالة لتحديث ملخص الاختبار النهائي.
+         */
+        function updateQuizSummary() {
+            const totalItems = quizData.length;
+            const correctCount = Object.values(results).filter(r => r === true).length;
+            const summaryDiv = document.getElementById('quizSummary');
+
+            if (Object.keys(results).length === totalItems) {
+                summaryDiv.classList.remove('hidden');
+                if (correctCount === totalItems) {
+                    summaryDiv.classList.remove('bg-yellow-100', 'border-yellow-500');
+                    summaryDiv.classList.add('bg-green-100', 'border-green-500');
+                    summaryDiv.innerHTML = `
+                        <p class="text-2xl font-bold text-green-800">تهانينا! لقد أنهيت الاختبار بنجاح تام!</p>
+                        <p class="mt-2 text-lg">أنت جاهز تماماً. ${correctCount} من ${totalItems} تشخيص صحيح.</p>
+                    `;
+                } else {
+                    summaryDiv.classList.remove('bg-green-100', 'border-green-500');
+                    summaryDiv.classList.add('bg-yellow-100', 'border-yellow-500');
+                    summaryDiv.innerHTML = `
+                        <p class="text-xl font-bold">ملخص الاختبار:</p>
+                        <p class="mt-1">لقد قمت بفحص جميع الصور. النتائج: ${correctCount} تشخيص صحيح من أصل ${totalItems}.</p>
+                    `;
+                }
+            } else {
+                summaryDiv.classList.add('hidden');
+            }
+        }
+
+        // بدء عرض شاشة البوابة عند تحميل الصفحة
+        window.onload = renderGateScreen;
+    </script>
+</body>
+</html>
+
