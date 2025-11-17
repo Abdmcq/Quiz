@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبر نفسك باسئلة تفاعلية - @Ans2co1bot</title>
+    <link rel="icon" href="icon.png" type="image/png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* --- Variables and Base Styles --- */
+        :root {
+            --primary-color: #4a00e0; /* Vibrant Purple */
+            --secondary-color: #8e2de2; /* Lighter Purple */
+            --accent-color: #00bcd4; /* Cyan Accent */
+            --background-start: #f4f6f9; /* Light Grayish Blue */
+            --background-end: #e9eafc;   /* Lighter Lilac */
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --text-light: #555;
+            --text-on-primary: #ffffff;
+            --correct-color: #00c853; /* Green */
+            --wrong-color: #ff3d00; /* Red */
+            --border-color: #e0e0e0;
+            --shadow-color: rgba(74, 0, 224, 0.15);
+            --hover-shadow-color: rgba(74, 0, 224, 0.3);
+            --font-family: 'Cairo', sans-serif;
+            --border-radius-sm: 6px;
+            --border-radius-md: 10px;
+            --border-radius-lg: 15px;
+
+            /* Dark Mode Variables */
+            --dark-bg-start: #1a1a2e; /* Deep Navy */
+            --dark-bg-end: #16213e;   /* Darker Blue */
+            --dark-card-bg: #1f2940; /* Slightly Lighter Dark Blue */
+            --dark-text-color: #e0e0e0; /* Light Gray */
+            --dark-text-light: #a0a0a0; /* Medium Gray */
+            --dark-border-color: #3a3a5e; /* Dark Purple/Blue Border */
+            --dark-shadow-color: rgba(0, 0, 0, 0.3);
+            --dark-hover-shadow-color: rgba(0, 0, 0, 0.5);
+            --dark-primary-hover: #6a11cb; /* Slightly lighter purple for dark hover */
+            --dark-accent-color: #00dffc; /* Brighter Cyan for Dark Mode */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, var(--background-start), var(--background-end));
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: space-between;
+            padding-top: 30px;
+            overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease; /* Smooth transition for body */
+        }
+        
+        body.no-scroll {
+            overflow: hidden; /* Prevent background scrolling when modal is active */
+        }
+
+        /* --- Splash Modal Styles --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 90%;
+            width: 500px;
+            animation: modalPop 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+        @keyframes modalPop {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .modal-content h2 {
+            margin-bottom: 30px;
+            line-height: 1.4;
+            font-weight: 900;
+        }
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .success-button {
+            background: var(--correct-color);
+            transition: all 0.2s ease;
+        }
+        .success-button:hover {
+            background: #009939;
+        }
+        .failure-button {
+            background: var(--wrong-color);
+            transition: all 0.2s ease;
+        }
+        .failure-button:hover {
+            background: #cc2f00;
+        }
+        .failure-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffe0b2, #ffcc80); /* Warm, intense background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 3000;
+            padding: 20px;
+        }
+        .failure-overlay h1 {
+            font-size: 2em;
+            font-weight: 900;
+            color: #cc2f00;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        /* --- Page Containers & Transitions --- */
+        .page {
+            width: 100%;
+            max-width: 850px;
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0s linear 0.5s;
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .page.visible {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.5s ease-in-out;
+            position: relative;
+            top: auto;
+            left: auto;
+            transform: none;
+            margin-bottom: 40px;
+        }
+        #main-buttons-page {
+            top: 30px;
+        }
+
+
+        /* --- General Button Styles --- */
+        .button {
+            padding: 15px 30px;
+            margin-bottom: 0px; /* Removed margin-bottom here to fit modal better */
+            border: none;
+            border-radius: var(--border-radius-lg);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-on-primary);
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            font-family: var(--font-family);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 450px; 
+            text-decoration: none;
+        }
+        /* Restore margin for main page buttons */
+        #main-buttons-page .button {
+             margin-bottom: 15px;
+        }
+        
+        .button:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px var(--hover-shadow-color);
+        }
+        .button:active {
+            transform: translateY(0) scale(1);
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+        .button i {
+            font-size: 1.1em;
+        }
+
+
+        /* --- Main Buttons Page Styles --- */
+        #main-buttons-page h1 {
+            font-family: var(--font-family);
+            font-size: 2.2em;
+            font-weight: 900;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            transition: color 0.4s ease;
+        }
+        .main-button {
+             width: 100%;
+        }
+        .main-buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 450px;
+        }
+        /* --- Quiz Page Styles --- */
+        #quiz-page {
+             padding-bottom: 80px;
+             padding-top: 0;
+             margin-bottom: 0;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-on-primary);
+            text-align: center;
+            padding: 25px 20px;
+            width: 100%;
+            box-sizing: border-box;
+            border-bottom-left-radius: var(--border-radius-lg);
+            border-bottom-right-radius: var(--border-radius-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        header h1 i {
+            font-size: 1.2em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Quiz Container (Card) */
+        .container {
+            max-width: 100%;
+            margin: 30px 0 0 0;
+            padding: 30px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            width: 100%;
+            box-sizing: border-box;
+            animation: fadeIn 0.6s ease-out;
+            transition: background-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question {
+            margin-bottom: 35px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 25px;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+            animation: slideInUp 0.5s ease-out forwards;
+            opacity: 0;
+            animation-delay: calc(var(--question-index) * 0.1s);
+            transition: border-color 0.4s ease;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .question h2 {
+            font-size: 1.4em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.6;
+            transition: color 0.4s ease;
+            text-align: left; /* Set question text alignment to left for English */
+        }
+        .question .original-question, .question .translated-question {
+            font-family: 'Cairo', sans-serif;
+        }
+        .question .original-question {
+             direction: ltr; /* Ensure original (English) question is LTR */
+        }
+        .question .translated-question {
+             direction: rtl; /* Ensure translated (Arabic) question is RTL */
+             display: none;
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .options button {
+            width: 100%;
+            padding: 15px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            background-color: #f8f9fa;
+            color: var(--text-color); /* Use text-color variable */
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-family);
+            text-align: left; /* Set option button text alignment to left for English */
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+        .options button:hover:not(:disabled) {
+            background-color: #e9ecef;
+            border-color: var(--secondary-color);
+            transform: translateX(-5px);
+        }
+        .options button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Styling for Correct/Wrong Answers */
+         .options button.correct, .options button.wrong {
+            color: white;
+            border-color: transparent;
+            font-weight: 700;
+        }
+        .options button.correct {
+            background-color: var(--correct-color);
+        }
+        .options button.wrong {
+            background-color: var(--wrong-color);
+        }
+
+        .options button.correct::before,
+        .options button.wrong::before {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 1.1em;
+            position: absolute;
+            right: 15px; /* Adjust check/x position for LTR */
+            top: 50%;
+            transform: translateY(-50%);
+            animation: popIn 0.4s ease-out;
+        }
+        .options button.correct::before { content: "\f00c"; color: white; }
+        .options button.wrong::before { content: "\f00d"; color: white; }
+
+        @keyframes popIn {
+            0% { transform: translateY(-50%) scale(0.5); opacity: 0; }
+            70% { transform: translateY(-50%) scale(1.1); opacity: 1; }
+            100% { transform: translateY(-50%) scale(1); }
+        }
+
+        .options .original-option, .options .translated-option{
+            display: block;
+            font-family: 'Cairo', sans-serif;
+            padding-right: 30px; /* Adjust padding for check/x icon */
+        }
+        .options .original-option{
+            direction: ltr; /* Original (English) option text is LTR */
+        }
+        .options .translated-option{
+            direction: rtl; /* Translated (Arabic) option text is RTL */
+            display: none;
+            padding-right: 0; /* Remove LTR padding for RTL translation */
+            padding-left: 30px; /* Add RTL padding for check/x icon */
+            text-align: right;
+        }
+
+        /* Translate Buttons */
+        .translate-container {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 20px;
+            gap: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .translate-button, .untranslate-button {
+            padding: 8px 18px;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            background-color: var(--accent-color);
+            color: white;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-family: var(--font-family);
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+         .translate-button::before { font-family: "Font Awesome 6 Free"; content: "\f0ac"; font-weight: 900; }
+         .untranslate-button::before { font-family: "Font Awesome 6 Free"; content: "\f0e2"; font-weight: 900; }
+
+        .translate-button:hover, .untranslate-button:hover {
+            background-color: #0097a7;
+            transform: scale(1.05);
+        }
+        .untranslate-button { background-color: #bdbdbd; }
+        .untranslate-button:hover { background-color: #9e9e9e; }
+
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: transparent;
+            color: var(--text-light);
+            font-size: 0.9em;
+            width: 100%;
+            font-family: var(--font-family);
+            box-sizing: border-box;
+            margin-top: auto;
+            transition: color 0.4s ease;
+        }
+        footer i.fa-copyright { margin-inline-end: 5px; }
+
+
+        /* --- Back Button Styles --- */
+        .back-button-container {
+            text-align: center;
+            margin-top: 30px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .back-button {
+             background: #757575;
+             color: white; /* Ensure text is white */
+             width: auto;
+             display: inline-flex;
+             padding: 10px 25px;
+             font-size: 1em;
+             font-weight: 700;
+             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+             border-radius: var(--border-radius-lg); /* Consistent radius */
+             transition: all 0.3s ease;
+        }
+         .back-button::before {
+             font-family: "Font Awesome 6 Free"; content: "\f060";
+             font-weight: 900; margin-inline-end: 8px;
+        }
+        .back-button:hover {
+            background-color: #555;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        footer .back-button-container { margin-top: 0; margin-bottom: 10px; }
+
+        /* --- Dark Mode Toggle Button --- */
+        .floating-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px; /* Changed to right */
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-on-primary);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em; /* Larger icon */
+            box-shadow: 0 5px 15px var(--shadow-color);
+            z-index: 1000;
+            transition: all 0.4s ease;
+            transform: scale(1);
+        }
+        .floating-btn:hover {
+            transform: scale(1.1) rotate(15deg); /* Rotate effect on hover */
+            box-shadow: 0 8px 20px var(--hover-shadow-color);
+        }
+        .floating-btn i {
+            transition: transform 0.4s ease; /* Smooth icon transition */
+        }
+
+        /* --- Dark Mode Styles --- */
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark-bg-start), var(--dark-bg-end));
+            color: var(--dark-text-color);
+            --shadow-color: var(--dark-shadow-color); /* Update shadow variable */
+            --hover-shadow-color: var(--dark-hover-shadow-color); /* Update hover shadow variable */
+            --border-color: var(--dark-border-color); /* Update border variable */
+            --text-color: var(--dark-text-color); /* Update text variable */
+            --text-light: var(--dark-text-light); /* Update light text variable */
+        }
+
+        body.dark-mode #main-buttons-page h1 {
+            color: var(--secondary-color); /* Lighter purple for dark mode */
+            text-shadow: none;
+        }
+         body.dark-mode .sub-buttons-page h2 {
+             color: var(--accent-color); /* Cyan for sub-headings in dark mode */
+         }
+
+        body.dark-mode .sub-button {
+            background: var(--dark-card-bg);
+            color: var(--accent-color);
+            border-color: var(--dark-border-color);
+            box-shadow: 0 2px 8px var(--dark-shadow-color);
+        }
+        body.dark-mode .sub-button:hover {
+            background: var(--dark-border-color); /* Slightly lighter dark background on hover */
+            color: var(--dark-accent-color); /* Brighter cyan text on hover */
+            border-color: var(--accent-color);
+            box-shadow: 0 6px 15px var(--dark-hover-shadow-color);
+        }
+
+        body.dark-mode header {
+            background: linear-gradient(135deg, var(--dark-bg-start), #1f2940); /* Dark darker gradient */
+            box-shadow: 0 5px 15px var(--dark-shadow-color);
+        }
+
+        body.dark-mode .container {
+            background-color: var(--dark-card-bg);
+            box-shadow: 0 5px 25px var(--dark-shadow-color);
+        }
+
+        body.dark-mode .question {
+            border-bottom-color: var(--dark-border-color);
+        }
+        body.dark-mode .question h2 {
+            color: var(--dark-accent-color); /* Bright Cyan for questions */
+        }
+
+        body.dark-mode .options button {
+            background-color: #2c3e50; /* Darker blue-gray */
+            border-color: var(--dark-border-color);
+            color: var(--dark-text-color);
+        }
+        body.dark-mode .options button:hover:not(:disabled) {
+            background-color: #3a506b; /* Slightly lighter on hover */
+            border-color: var(--accent-color);
+        }
+        body.dark-mode .options button:disabled {
+            opacity: 0.6;
+        }
+
+        /* Keep correct/wrong colors, text is already white */
+         body.dark-mode .options button.correct { background-color: var(--correct-color); }
+         body.dark-mode .options button.wrong { background-color: var(--wrong-color); }
+         body.dark-mode .options button.correct::before,
+         body.dark-mode .options button.wrong::before { color: white; }
+
+
+        body.dark-mode .translate-button { background-color: var(--accent-color); color: #111; } /* Dark text on cyan */
+        body.dark-mode .translate-button:hover { background-color: var(--dark-accent-color); }
+        body.dark-mode .untranslate-button { background-color: #555; }
+        body.dark-mode .untranslate-button:hover { background-color: #777; }
+
+        body.dark-mode footer { color: var(--dark-text-light); }
+
+        body.dark-mode .back-button {
+            background: #555;
+            color: var(--dark-text-color);
+            box-shadow: 0 2px 8px var(--dark-shadow-color);
+        }
+        body.dark-mode .back-button:hover {
+            background: #777;
+            box-shadow: 0 4px 12px var(--dark-hover-shadow-color);
+        }
+
+        body.dark-mode .floating-btn {
+            background: linear-gradient(135deg, #2c3e50, #1f2940); /* Dark gradient for button */
+            color: var(--dark-accent-color); /* Cyan icon */
+            box-shadow: 0 5px 15px var(--dark-shadow-color);
+        }
+         body.dark-mode .floating-btn:hover {
+             box-shadow: 0 8px 20px var(--dark-hover-shadow-color);
+         }
+
+
+        /* --- Responsive Design (Keep as is, dark mode styles apply automatically) --- */
+        @media (max-width: 768px) {
+            .page { padding: 15px; top: 70px; }
+             #main-buttons-page { top: 20px; }
+             #main-buttons-page h1 { font-size: 1.9em; }
+             .sub-buttons-page h2 { font-size: 1.6em; }
+             .button { padding: 14px 25px; font-size: 1.1em; }
+             .modal-content { padding: 30px; }
+             .failure-overlay h1 { font-size: 1.5em; }
+             .sub-buttons-container { grid-template-columns: 1fr; }
+            header { padding: 20px 15px; }
+            header h1 { font-size: 1.7em; gap: 10px; }
+            header h1 i { font-size: 1.1em; }
+            .container { margin-top: 20px; padding: 20px; }
+            .question h2 { font-size: 1.25em; }
+            .options button { font-size: 1em; padding: 12px 15px; }
+             .options button.correct::before, .options button.wrong::before { right: 12px; font-size: 1em; } /* Adjusted position */
+            .options .original-option{ padding-right: 25px; padding-left: 0; }
+            .options .translated-option{ padding-left: 25px; padding-right: 0; } /* Adjusted padding */
+             .translate-button, .untranslate-button { font-size: 0.85em; padding: 7px 15px; }
+            footer { font-size: 0.85em; padding: 15px; }
+            .back-button { padding: 9px 20px; font-size: 0.95em; }
+            .floating-btn { width: 50px; height: 50px; font-size: 1.3em; bottom: 20px; right: 20px; }
+        }
+
+        @media (max-width: 480px) {
+             #main-buttons-page h1 { font-size: 1.6em; }
+              .sub-buttons-page h2 { font-size: 1.4em; }
+             .button { padding: 12px 20px; font-size: 1em; }
+             .modal-content { padding: 20px; }
+             .failure-overlay h1 { font-size: 1.2em; }
+            header h1 { font-size: 1.5em; }
+            .container { padding: 15px; }
+            .question h2 { font-size: 1.15em; }
+            .options button { font-size: 0.95em; }
+            .floating-btn { width: 45px; height: 45px; font-size: 1.2em; bottom: 15px; right: 15px;}
+        }
+
+    </style>
+</head>
+<body dir="rtl" class="no-scroll">
+
+    <!-- Splash Screen Modal (MUST BE FIRST THING IN BODY) -->
+    <div id="splash-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="font-size: 1.8em; color: var(--primary-color);">يارب ينجح عبدالرحمن حسن بالعناية والتخدير</h2>
+            <div class="modal-buttons">
+                <button class="button success-button" onclick="validateSuccess()">آمين</button>
+                <button class="button failure-button" onclick="showFailureMessage()">إن شاء الله ماينجح</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Failure Message Overlay (Hidden initially) -->
+    <div id="failure-message" class="failure-overlay" style="display: none;">
+        <h1>ارجع افتح الموقع من جديد واضغط على آمين حتى يشتغل</h1>
+    </div>
+
+    <!-- Main Buttons Page (Hidden initially by JS/CSS) -->
+    <div id="main-buttons-page" class="page">
+        <h1><i class="fas fa-book-medical"></i> اختبر نفسك - @Ans2co1bot</h1>
+        <div class="main-buttons-container">
+            <button class="button main-button" onclick="loadQuiz('Lecture 1')">
+                <i class="fas fa-lungs"></i>
+                اختبار المحاضرة الأولى (25 سؤال)
+            </button>
+            <button class="button main-button" onclick="loadQuiz('Lecture 2')">
+                <i class="fas fa-mask"></i>
+                اختبار المحاضرة الثانية (25 سؤال)
+            </button>
+        </div>
+    </div>
+
+    <!-- Quiz Page -->
+    <div id="quiz-page" class="page">
+        <header>
+            <h1 id="quiz-title"> <i class="fas fa-flask-vial"></i> </h1>
+        </header>
+        <div class="container">
+            <p class="loading-text" style="text-align: center; font-size: 1.2em; color: var(--text-light); padding: 30px;">جار تحميل الأسئلة...</p>
+            <!-- Questions will be loaded here -->
+        </div>
+        <footer>
+             <div class="back-button-container" style="margin-top: 0; margin-bottom: 10px;">
+                <button class="button back-button" onclick="showPage('main-buttons-page')">رجوع</button>
+            </div>
+            <span><i class="far fa-copyright"></i> عبدالرحمن حسن</span>
+        </footer>
+    </div>
+
+    <!-- Dark Mode Toggle Button -->
+    <button id="darkModeToggle" class="floating-btn" aria-label="Toggle Dark Mode" style="display: none;">
+        <i class="fas fa-sun"></i> <!-- Initial icon is sun (light mode) -->
+    </button>
+
+
+    <script>
+        // ***************************************************************
+        // قاعدة بيانات الأسئلة
+        // ***************************************************************
+        const quizData = {
+            "Lecture 1": [
+                { // Q1 - Page 3 (Face Mask)
+                    "question": "What is the fundamental skill that all anesthesia providers must master regarding the face mask?",
+                    "options": [
+                        "A- Inserting the tracheal tube through it.",
+                        "B- The ability to hold the mask and administer positive pressure ventilation through it.",
+                        "C- Using the head-tilt/chin-lift technique only.",
+                        "D- Removing latex from the mask.",
+                        "E- All of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q2 - Page 3 (Face Mask)
+                    "question": "What is the primary purpose of using a Face Mask?",
+                    "options": [
+                        "A- Introducing an apparatus into the patient's mouth to secure the airway.",
+                        "B- Allows gas administration from the breathing system without introducing any apparatus into the patient's mouth.",
+                        "C- Reduces the required fresh gas flow.",
+                        "D- Provides complete protection from aspiration of regurgitated gastric content.",
+                        "E- All of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q3 - Page 4 (Indications)
+                    "question": "Which of the following is considered an indication for using a face mask?",
+                    "options": [
+                        "A- Ventilation preceding endotracheal intubation.",
+                        "B- Failed endotracheal intubation.",
+                        "C- Awake or lightly sedated patients requiring a high inspired oxygen concentration.",
+                        "D- A and B only.",
+                        "E- All of the above."
+                    ],
+                    "correct": 4
+                },
+                { // Q4 - Page 4 (Contraindications)
+                    "question": "Which of the following is a contraindication for using a face mask?",
+                    "options": [
+                        "A- Known increased risk of vomiting and regurgitation.",
+                        "B- Known significant airway obstruction.",
+                        "C- Need for high oxygen concentration.",
+                        "D- A and B only.",
+                        "E- None of the above."
+                    ],
+                    "correct": 3
+                },
+                { // Q5 - Page 5 (Advantages)
+                    "question": "An advantage of using a face mask compared to tracheal tubes or supraglottic devices is:",
+                    "options": [
+                        "A- Requires greater anesthetic depth.",
+                        "B- Lower incidence of sore throat.",
+                        "C- Increased use of muscle relaxants (NMBA).",
+                        "D- Maximal protection from aspiration.",
+                        "E- All of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q6 - Page 5 (Disadvantages)
+                    "question": "What is one disadvantage of using a face mask during anesthesia?",
+                    "options": [
+                        "A- Requires less anesthetic depth than tracheal tubes.",
+                        "B- Provides full protection against aspiration of gastric contents.",
+                        "C- The anesthesiologist's hands are tied up.",
+                        "D- Can be used without muscle relaxants (NMBA).",
+                        "E- None of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q7 - Page 6 (Complication: Gastric Inflation)
+                    "question": "Maintaining inspiratory pressure below 20 cm H2O is recommended when using a face mask for positive pressure ventilation to avoid:",
+                    "options": [
+                        "A- Nerve injury.",
+                        "B- Gastric Inflation.",
+                        "C- Eye swelling.",
+                        "D- Oxygen desaturation.",
+                        "E- None of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q8 - Page 6 (Complication: Nerve Injury)
+                    "question": "Excessive pressure from the face mask or mask strap may result in injury to which of the following:",
+                    "options": [
+                        "A- Kidney damage.",
+                        "B- Underlying nerves.",
+                        "C- Esophageal perforation.",
+                        "D- Hypotension.",
+                        "E- All of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q9 - Page 7 (Complication: Eye Injury)
+                    "question": "Which face mask complication may lead to temporary blindness?",
+                    "options": [
+                        "A- Postoperative jaw pain.",
+                        "B- Exposure to chemicals.",
+                        "C- Pressure on the central retinal artery leading to occlusion.",
+                        "D- Supraorbital nerve injury.",
+                        "E- All of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q10 - Page 7 (Complication: Latex Allergy)
+                    "question": "To avoid serious reactions in patients with latex allergy, which type of mask is recommended?",
+                    "options": [
+                        "A- Masks made of black rubber.",
+                        "B- Masks made of clear plastic.",
+                        "C- Non-latex masks.",
+                        "D- Masks made of elastomeric material.",
+                        "E- All of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q11 - Page 9 (Oropharyngeal Airway)
+                    "question": "Which parts constitute the Oropharyngeal Airway (OPA)?",
+                    "options": [
+                        "A- Flange, Bite portion, and Curved Portion.",
+                        "B- Flange only.",
+                        "C- Bite portion and Curved Portion only.",
+                        "D- Curved Portion only.",
+                        "E- None of the above."
+                    ],
+                    "correct": 0
+                },
+                { // Q12 - Page 9 (Oropharyngeal Airway Insertion)
+                    "question": "The correct method for inserting an Oral Airway (OPA) is to insert it with the concavity facing cephalad (upwards) and then rotate it by:",
+                    "options": [
+                        "A- 90 degrees.",
+                        "B- 180 degrees.",
+                        "C- 45 degrees.",
+                        "D- 360 degrees.",
+                        "E- None of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q13 - Page 9 (Oropharyngeal Airway Purpose)
+                    "question": "What is the role of the 'Flange' in the Oropharyngeal Airway?",
+                    "options": [
+                        "A- Pushing the tongue forward.",
+                        "B- Preventing the device from moving deeper into the mouth.",
+                        "C- Preventing the patient from biting the endotracheal tube.",
+                        "D- Reducing oropharyngeal mucosal trauma.",
+                        "E- B and C only."
+                    ],
+                    "correct": 1
+                },
+                { // Q14 - Page 11 (Oropharyngeal Airway Uses)
+                    "question": "The Oropharyngeal Airway is used for all the following EXCEPT:",
+                    "options": [
+                        "A- To prevent the patient from biting the ETT.",
+                        "B- To facilitate suctioning.",
+                        "C- To obtain a better mask fit.",
+                        "D- To reduce the risk of regurgitation.",
+                        "E- To protect the tongue from biting."
+                    ],
+                    "correct": 3
+                },
+                { // Q15 - Page 11 (Oropharyngeal Airway Complications)
+                    "question": "Complications of using the Oropharyngeal Airway include:",
+                    "options": [
+                        "A- Iatrogenic trauma and airway hyperreactivity.",
+                        "B- Ulceration and necrosis of oropharyngeal structures.",
+                        "C- Dental injury.",
+                        "D- All of the above.",
+                        "E- None of the above."
+                    ],
+                    "correct": 3
+                },
+                { // Q16 - Page 12 (Special airways)
+                    "question": "Which oropharyngeal airway is the most frequently used and has a tubular channel for air exchange and suctioning?",
+                    "options": [
+                        "A- Berman Airway.",
+                        "B- Patil-Syracuse Endoscopic Airway.",
+                        "C- Guedel Airway.",
+                        "D- Nasopharyngeal Airway.",
+                        "E- None of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q17 - Page 13 (Nasopharyngeal Airway)
+                    "question": "The Nasopharyngeal Airway (NPA) is better tolerated than OPA in which patient condition?",
+                    "options": [
+                        "A- Patient is completely unconscious.",
+                        "B- Patient is awake or lightly sedated with intact airway reflexes.",
+                        "C- Patient with basilar skull fracture.",
+                        "D- Patient with known anticoagulation disorder.",
+                        "E- None of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q18 - Page 13 (Nasopharyngeal Airway Placement)
+                    "question": "When placing the Nasopharyngeal Airway, the pharyngeal end should be located:",
+                    "options": [
+                        "A- Above the epiglottis.",
+                        "B- Below the base of the tongue.",
+                        "C- Between the base of the tongue and the epiglottis.",
+                        "D- Inside the trachea.",
+                        "E- None of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q19 - Page 14 (Nasopharyngeal Airway Uses)
+                    "question": "The Nasopharyngeal Airway (NPA) is used for all the following EXCEPT:",
+                    "options": [
+                        "A- To facilitate suctioning.",
+                        "B- As a guide for a nasogastric tube.",
+                        "C- To dilate the nasal passages prior to nasotracheal intubation.",
+                        "D- To maintain the airway during dental surgery.",
+                        "E- In cases of basilar skull fracture."
+                    ],
+                    "correct": 4
+                },
+                { // Q20 - Page 14 (Nasopharyngeal Airway Contraindications)
+                    "question": "Which of the following is a contraindication for the Nasopharyngeal Airway (NPA)?",
+                    "options": [
+                        "A- History of nosebleeds requiring medical treatment.",
+                        "B- To apply continuous positive airway pressure (CPAP).",
+                        "C- Patient is semi comatose.",
+                        "D- During and after pharyngeal surgery.",
+                        "E- All of the above."
+                    ],
+                    "correct": 0
+                },
+                { // Q21 - Page 15 (Supraglottic Airway Devices)
+                    "question": "Supraglottic Airway Devices (SADs) are defined as devices placed:",
+                    "options": [
+                        "A- Inside the trachea.",
+                        "B- Above the glottis and help in providing adequate ventilation.",
+                        "C- Immediately below the glottis.",
+                        "D- That function to stabilize the tongue.",
+                        "E- All of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q22 - Page 15 (SAD Contraindications)
+                    "question": "All of the following are contraindications for using SADs EXCEPT:",
+                    "options": [
+                        "A- Airway edema.",
+                        "B- Active vomiting.",
+                        "C- Restricted mouth opening.",
+                        "D- Obesity.",
+                        "E- Lower incidence of sore throat."
+                    ],
+                    "correct": 4
+                },
+                { // Q23 - Page 16 (SAD Classification - Cuffless)
+                    "question": "Which of the following devices is classified as a Cuffless SAD?",
+                    "options": [
+                        "A- LMA Classic.",
+                        "B- LMA Proseal.",
+                        "C- i-gel.",
+                        "D- Combitube.",
+                        "E- All of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q24 - Page 17 (SAD Classification - Generation)
+                    "question": "The LMA Proseal device is classified under which generation (Classification of SADs)?",
+                    "options": [
+                        "A- First Generation.",
+                        "B- Second Generation.",
+                        "C- Third Generation.",
+                        "D- Fourth Generation.",
+                        "E- None of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q25 - Page 17 (SAD Classification - Suction Port)
+                    "question": "Which of the following devices is classified as a SAD with a 'Channeled Suction Port'?",
+                    "options": [
+                        "A- LMA Classic.",
+                        "B- LMA Fastrack.",
+                        "C- i-gel.",
+                        "D- LMA Proseal.",
+                        "E- All of the above."
+                    ],
+                    "correct": 3
+                }
+            ],
+             "Lecture 2": [
+                { // Q1 - Page 2 (First vs Second Generation SADs)
+                    "question": "What is the key distinguishing design feature of Second-generation Supraglottic Airway Devices (SADs) compared to first-generation SADs?",
+                    "options": [
+                        "A- They include the original LMA Classic.",
+                        "B- They have a single ventilation channel.",
+                        "C- They have specific design features to reduce the risk of aspiration with separation of ventilatory and gastric access channels.",
+                        "D- They require tracheal intubation for hands-free airway maintenance.",
+                        "E- All of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q2 - Page 2 (Second Generation SADs examples)
+                    "question": "Which of the following SADs are classified as Second-generation devices?",
+                    "options": [
+                        "A- LMA Classic and LMA Unique.",
+                        "B- LMA ProSeal and i-gel.",
+                        "C- LMA Flexible and LMA Fastrach.",
+                        "D- Combitube and King LT.",
+                        "E- All of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q3 - Page 3 (SAD Advantages)
+                    "question": "One significant advantage of SADs compared to tracheal intubation is:",
+                    "options": [
+                        "A- They require direct visualization of the larynx for placement.",
+                        "B- Increased speed and ease of placement, even by less experienced operators.",
+                        "C- Decreased cardiovascular stability on insertion.",
+                        "D- They are only suitable for experienced operators.",
+                        "E- All of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q4 - Page 3 (SAD Advantages)
+                    "question": "Which of the following is NOT an advantage provided by Supraglottic Airway Devices?",
+                    "options": [
+                        "A- Minimal rise in intraocular pressure on insertion.",
+                        "B- Lower frequency of coughing during emergence.",
+                        "C- Can be placed without direct visualization of the larynx.",
+                        "D- Requires more time to place compared to tracheal intubation.",
+                        "E- All of the above."
+                    ],
+                    "correct": 3
+                },
+                { // Q5 - Page 3 (SAD Role)
+                    "question": "In the 'can't intubate, can't ventilate' scenario, what is the recommended approach regarding SADs?",
+                    "options": [
+                        "A- Immediate surgical cricothyrotomy is mandatory.",
+                        "B- The decision to use SADs should be made early to gain time while attempting to secure a definite airway.",
+                        "C- SADs should be avoided as they cannot act as a conduit for intubation.",
+                        "D- Only first-generation SADs should be considered.",
+                        "E- None of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q6 - Page 4 (SAD Disadvantages/Limitations)
+                    "question": "First-generation SADs are generally contraindicated in patients with full stomachs or prone to reflux because:",
+                    "options": [
+                        "A- They require muscle relaxants.",
+                        "B- They normally provide little or no protection against aspiration of refluxed gastric contents.",
+                        "C- They are more difficult to place than tracheal tubes.",
+                        "D- They cause severe airway hyperreactivity.",
+                        "E- All of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q7 - Page 4 (Second Generation Improvements)
+                    "question": "Second-generation SADs improve safety by offering:",
+                    "options": [
+                        "A- Lower cuff seal pressure.",
+                        "B- Increased risk of gastric gas insufflation.",
+                        "C- Gastric access and drain tube.",
+                        "D- No 'bite block' feature.",
+                        "E- None of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q8 - Page 5 (LMA Introduction)
+                    "question": "The Laryngeal Mask Airway (LMA) comprises a wide-bore tube with an elliptical inflatable cuff designed to seal around the:",
+                    "options": [
+                        "A- Trachea.",
+                        "B- Oropharynx.",
+                        "C- Nasopharynx.",
+                        "D- Laryngeal inlet.",
+                        "E- All of the above."
+                    ],
+                    "correct": 3
+                },
+                { // Q9 - Page 5 (LMA Contraindications)
+                    "question": "Which patient condition is a contraindication for using the Laryngeal Mask Airway (LMA)?",
+                    "options": [
+                        "A- Small oral aperture.",
+                        "B- Possibility of reflux of gastric content (e.g., morbid obesity).",
+                        "C- Patients with poor lung compliance or COPD.",
+                        "D- Oropharyngeal mass.",
+                        "E- All of the above."
+                    ],
+                    "correct": 4
+                },
+                { // Q10 - Page 6 (LMA Types)
+                    "question": "The LMA ProSeal is primarily characterized by which feature that makes it a Second-generation SAD?",
+                    "options": [
+                        "A- It is a disposable form of the classical LMA.",
+                        "B- It has wire-reinforced tubing.",
+                        "C- It includes a Gastric suction port and a built-in bite block.",
+                        "D- It is designed to guide blind, difficult intubations.",
+                        "E- All of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q11 - Page 6 (LMA Types)
+                    "question": "Which LMA is specifically designed as an Intubating LMA to guide blind, difficult intubations?",
+                    "options": [
+                        "A- LMA Classic.",
+                        "B- LMA Flexible.",
+                        "C- LMA Unique.",
+                        "D- LMA Fastrach.",
+                        "E- None of the above."
+                    ],
+                    "correct": 3
+                },
+                { // Q12 - Page 6 (LMA Disadvantages)
+                    "question": "A disadvantage common to the LMA Supreme and LMA ProSeal is:",
+                    "options": [
+                        "A- High Oropharyngeal Seal Pressure (OSP).",
+                        "B- They are bulky, and folding of the mask can obstruct the gastric port.",
+                        "C- They are only made from Polyvinyl chloride.",
+                        "D- Increased pharyngolaryngeal trauma.",
+                        "E- All of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q13 - Page 6 (LMA Disadvantages)
+                    "question": "A low Oropharyngeal Seal Pressure (OSP) is a disadvantage for which of the following LMA types?",
+                    "options": [
+                        "A- LMA Classic.",
+                        "B- LMA Unique.",
+                        "C- LMA Flexible.",
+                        "D- All of the above.",
+                        "E- None of the above."
+                    ],
+                    "correct": 3
+                },
+                { // Q14 - Page 8 (i-gel Material)
+                    "question": "The i-gel is made from which type of material?",
+                    "options": [
+                        "A- Black rubber.",
+                        "B- Polyvinyl chloride.",
+                        "C- Thermoplastic elastomer (soft gel-like material).",
+                        "D- Wire-reinforced silicone.",
+                        "E- None of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q15 - Page 8 (i-gel Feature)
+                    "question": "A key feature of the i-gel that contributes to its ease of use is:",
+                    "options": [
+                        "A- It has an elliptical inflatable cuff.",
+                        "B- It is noninflatable and anatomically-molded.",
+                        "C- It requires direct visualization for insertion.",
+                        "D- It does not have an integral bite block.",
+                        "E- All of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q16 - Page 8 (i-gel Advantages)
+                    "question": "Which of the following is an advantage of the i-gel device?",
+                    "options": [
+                        "A- Increased incidence of downfolding of the epiglottis.",
+                        "B- Higher incidence of trauma.",
+                        "C- Integral bite block reduces the possibility of airway obstruction.",
+                        "D- Gastric channel is only available in pediatric sizes.",
+                        "E- None of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q17 - Page 9 (i-gel Limitation)
+                    "question": "What is the specific limitation regarding the gastric channel in the i-gel device?",
+                    "options": [
+                        "A- The gastric channel is not present in adult sizes.",
+                        "B- The gastric channel is only present in the Size 6 i-gel.",
+                        "C- The gastric channel is only available in pediatric sizes.",
+                        "D- The Size 1 i-gel does not have a gastric channel.",
+                        "E- None of the above."
+                    ],
+                    "correct": 3
+                },
+                { // Q18 - Page 10 (Combitube Function)
+                    "question": "The Tracheal Esophageal Combitube (Combitube) is functional whether introduced into the esophagus or the trachea because:",
+                    "options": [
+                        "A- It has a single, adjustable cuff.",
+                        "B- It has two separate lumens for ventilation.",
+                        "C- It only requires a full stomach.",
+                        "D- It is only available in one size.",
+                        "E- None of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q19 - Page 10 (Combitube Sizes)
+                    "question": "The Combitube is available in two sizes: the 41 Fr size and the 37 Fr size. The 37 Fr size is used for:",
+                    "options": [
+                        "A- Large adults.",
+                        "B- Adults 4 to 6 feet tall.",
+                        "C- Neonates and infants.",
+                        "D- Pediatric patients only.",
+                        "E- None of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q20 - Page 10 (Combitube Uses)
+                    "question": "The Combitube is indicated for use in all of the following scenarios EXCEPT:",
+                    "options": [
+                        "A- Massive upper gastrointestinal bleeding.",
+                        "B- Airway protection from regurgitation.",
+                        "C- Acute bronchospasm.",
+                        "D- Routine anesthesia in low-risk patients.",
+                        "E- During cardiopulmonary resuscitation."
+                    ],
+                    "correct": 3
+                },
+                { // Q21 - Page 11 (King LT)
+                    "question": "What is a distinguishing characteristic of the King LT (Laryngeal Tube)?",
+                    "options": [
+                        "A- It is a single-use SAD.",
+                        "B- It is a specialized tracheal intubation device.",
+                        "C- It is a reusable supraglottic airway.",
+                        "D- It has an open distal end for intubation.",
+                        "E- None of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q22 - Page 12 (SAD Insertion Procedure)
+                    "question": "What is the initial crucial step before inserting any cuffed supraglottic device (LMA or LTA)?",
+                    "options": [
+                        "A- Insert the device in the sniffing position.",
+                        "B- Lubricate the tip of the device.",
+                        "C- Inflate cuffs fully to check for leaks before deflating.",
+                        "D- Open the patient's mouth widely.",
+                        "E- All of the above."
+                    ],
+                    "correct": 2
+                },
+                { // Q23 - Page 12 (SAD Insertion Position)
+                    "question": "The patient's head should be placed in which position for the insertion of LMA and i-gel?",
+                    "options": [
+                        "A- Neutral position.",
+                        "B- Sniffing position.",
+                        "C- Head down position.",
+                        "D- Lateral recovery position.",
+                        "E- None of the above."
+                    ],
+                    "correct": 1
+                },
+                { // Q24 - Page 13 (SAD Placement Confirmation)
+                    "question": "Which of the following methods is used to confirm proper supraglottic tube placement?",
+                    "options": [
+                        "A- Continuous CO2 waveform on capnography.",
+                        "B- Auscultation of air movement over the chest.",
+                        "C- Visible chest rise and fall.",
+                        "D- Stable or improving oxygenation.",
+                        "E- All of the above."
+                    ],
+                    "correct": 4
+                },
+                { // Q25 - Page 12 (LMA Cuff Volume)
+                    "question": "According to Table 5.2, what is the maximum recommended cuff inflation volume for a Size 4 LMA (Adult 50-70 kg)?",
+                    "options": [
+                        "A- Up to 20 mL.",
+                        "B- Up to 30 mL.",
+                        "C- Up to 40 mL.",
+                        "D- Up to 60 mL.",
+                        "E- None of the above."
+                    ],
+                    "correct": 1
+                }
+            ]
+        };
+
+        const localTranslations = {
+            // Lecture 1 Translations (Arabic for translation button)
+            "What is the fundamental skill that all anesthesia providers must master regarding the face mask?": "ما هي المهارة الأساسية التي يجب أن يتقنها جميع مقدمي التخدير فيما يتعلق بقناع الوجه؟",
+            "A- Inserting the tracheal tube through it.": "أ- إدخال أنبوب القصبة الهوائية من خلاله.",
+            "B- The ability to hold the mask and administer positive pressure ventilation through it.": "ب- القدرة على حمل القناع وإعطاء التهوية بالضغط الإيجابي من خلاله.",
+            "C- Using the head-tilt/chin-lift technique only.": "ج- استخدام تقنية رفع الذقن وإمالة الرأس فقط.",
+            "D- Removing latex from the mask.": "د- إزالة اللدائن الحرة (Latex) من القناع.",
+            "E- All of the above.": "هـ- جميع ما سبق.",
+
+            "What is the primary purpose of using a Face Mask?": "ما هو الغرض الأساسي من استخدام قناع الوجه (Face Mask)؟",
+            "A- Introducing an apparatus into the patient's mouth to secure the airway.": "أ- إدخال جهاز في فم المريض لتثبيت مجرى الهواء.",
+            "B- Allows gas administration from the breathing system without introducing any apparatus into the patient's mouth.": "ب- يسمح بإعطاء الغاز للمريض من نظام التنفس دون إدخال أي جهاز في الفم.",
+            "C- Reduces the required fresh gas flow.": "ج- يقلل من تدفق الغاز الطازج المطلوب.",
+            "D- Provides complete protection from aspiration of regurgitated gastric content.": "د- يوفر حماية كاملة من شفط محتويات المعدة المرتجعة.",
+            
+            "Which of the following is considered an indication for using a face mask?": "أي مما يلي يُعتبر مؤشراً لاستخدام قناع الوجه؟",
+            "A- Ventilation preceding endotracheal intubation.": "أ- التهوية التي تسبق التنبيب الرغامي (Endotracheal intubation).",
+            "B- Failed endotracheal intubation.": "ب- فشل التنبيب الرغامي.",
+            "C- Awake or lightly sedated patients requiring a high inspired oxygen concentration.": "ج- المرضى المستيقظون أو المهدئون قليلاً الذين يحتاجون إلى تركيز عالٍ من الأكسجين المستنشق.",
+            "D- A and B only.": "د- أ وب فقط.",
+            
+            "Which of the following is a contraindication for using a face mask?": "أي مما يلي يُعد موانع استخدام لقناع الوجه؟",
+            "A- Known increased risk of vomiting and regurgitation.": "أ- خطر معروف بزيادة القيء والارتجاع.",
+            "B- Known significant airway obstruction.": "ب- انسداد مجرى هواء معروف ومهم.",
+            "C- Need for high oxygen concentration.": "ج- الحاجة إلى تركيز عالٍ من الأكسجين.",
+            
+            "An advantage of using a face mask compared to tracheal tubes or supraglottic devices is:": "من مزايا استخدام قناع الوجه مقارنةً بالأنابيب الرغامية أو أجهزة مجرى الهواء فوق المزمار:",
+            "A- Requires greater anesthetic depth.": "أ- الحاجة إلى عمق تخدير أكبر.",
+            "B- Lower incidence of sore throat.": "ب- انخفاض معدل التهاب الحلق.",
+            "C- Increased use of muscle relaxants (NMBA).": "ج- زيادة استخدام مرخيات العضلات (NMBA).",
+            "D- Maximal protection from aspiration.": "د- حماية قصوى من الشفط.",
+            
+            "What is one disadvantage of using a face mask during anesthesia?": "ما هي إحدى عيوب استخدام قناع الوجه أثناء التخدير؟",
+            "A- Requires less anesthetic depth than tracheal tubes.": "أ- يتطلب عمق تخدير أقل من الأنابيب الرغامية.",
+            "B- Provides full protection against aspiration of gastric contents.": "ب- يوفر حماية كاملة ضد شفط محتويات المعدة.",
+            "C- The anesthesiologist's hands are tied up.": "ج- يترك يدي طبيب التخدير مقيدتين.",
+            "D- Can be used without muscle relaxants (NMBA).": "د- يمكن استخدامه بدون مرخيات العضلات (NMBA).",
+            
+            "Maintaining inspiratory pressure below 20 cm H2O is recommended when using a face mask for positive pressure ventilation to avoid:": "يوصى بالحفاظ على ضغط الشهيق أقل من 20 سم ماء ($H_2O$) عند استخدام قناع الوجه للتهوية بالضغط الإيجابي لتجنب:",
+            "A- Nerve injury.": "أ- إصابة العصب.",
+            "B- Gastric Inflation.": "ب- انتفاخ المعدة بالغازات (Gastric Inflation).",
+            "C- Eye swelling.": "ج- التورم حول العين.",
+            "D- Oxygen desaturation.": "د- نقص الأكسجة.",
+            
+            "Excessive pressure from the face mask or mask strap may result in injury to which of the following:": "قد يؤدي الضغط المفرط من القناع أو رباط القناع إلى إصابة أي مما يلي:",
+            "A- Kidney damage.": "أ- تلف الكلية.",
+            "B- Underlying nerves.": "ب- إصابة الأعصاب الكامنة.",
+            "C- Esophageal perforation.": "ج- انثقاب المريء.",
+            "D- Hypotension.": "د- انخفاض ضغط الدم (Hypotension).",
+            
+            "Which face mask complication may lead to temporary blindness?": "أي مضاعفة لقناع الوجه قد تؤدي إلى العمى المؤقت؟",
+            "A- Postoperative jaw pain.": "أ- آلام الفك بعد العملية.",
+            "B- Exposure to chemicals.": "ب- التعرض للمواد الكيميائية.",
+            "C- Pressure on the central retinal artery leading to occlusion.": "ج- الضغط على الشريان الشبكي المركزي مما يؤدي إلى انسداده.",
+            "D- Supraorbital nerve injury.": "د- إصابة العصب فوق الحجاج.",
+            
+            "To avoid serious reactions in patients with latex allergy, which type of mask is recommended?": "لتجنب التفاعلات الخطيرة لدى المرضى الذين يعانون من حساسية اللاتكس، أي نوع من القناع يُنصح به؟",
+            "A- Masks made of black rubber.": "أ- الأقنعة المصنوعة من المطاط الأسود.",
+            "B- Masks made of clear plastic.": "ب- الأقنعة المصنوعة من البلاستيك الشفاف.",
+            "C- Non-latex masks.": "ج- الأقنعة غير المصنوعة من اللاتكس (Non-latex masks).",
+            "D- Masks made of elastomeric material.": "د- الأقنعة المصنوعة من مادة الإيلاستومر.",
+            
+            "Which parts constitute the Oropharyngeal Airway (OPA)?": "ما هي الأجزاء المكونة لمجرى الهواء الفموي البلعومي (OPA)؟",
+            "A- Flange, Bite portion, and Curved Portion.": "أ- الحافة (Flange)، جزء العض (Bite portion)، والجزء المنحني (Curved Portion).",
+            "B- Flange only.": "ب- الحافة (Flange) فقط.",
+            "C- Bite portion and Curved Portion only.": "ج- جزء العض والجزء المنحني فقط.",
+            "D- Curved Portion only.": "د- الجزء المنحني فقط.",
+            
+            "The correct method for inserting an Oral Airway (OPA) is to insert it with the concavity facing cephalad (upwards) and then rotate it by:": "الطريقة الصحيحة لإدخال مجرى الهواء الفموي (OPA) هي إدخاله مع تقعره مواجهاً للجهة العلوية ثم تدويره بـ:",
+            "A- 90 degrees.": "أ- 90 درجة.",
+            "B- 180 degrees.": "ب- 180 درجة.",
+            "C- 45 degrees.": "ج- 45 درجة.",
+            "D- 360 degrees.": "د- 360 درجة.",
+            
+            "What is the role of the 'Flange' in the Oropharyngeal Airway?": "ما هو دور 'الحافة' (Flange) في مجرى الهواء الفموي البلعومي؟",
+            "A- Pushing the tongue forward.": "أ- دفع اللسان إلى الأمام.",
+            "B- Preventing the device from moving deeper into the mouth.": "ب- منع الجهاز من التحرك أعمق في الفم.",
+            "C- Preventing the patient from biting the endotracheal tube.": "ج- منع المريض من عض الأنبوب الرغامي.",
+            "D- Reducing oropharyngeal mucosal trauma.": "د- تقليل الصدمة المخاطية البلعومية.",
+            "E- B and C only.": "هـ- ب وج فقط.",
+
+            "The Oropharyngeal Airway is used for all the following EXCEPT:": "يستخدم مجرى الهواء الفموي البلعومي في جميع ما يلي باستثناء:",
+            "A- To prevent the patient from biting the ETT.": "أ- لمنع المريض من عض الأنبوب الرغامي (ETT).",
+            "B- To facilitate suctioning.": "ب- لتسهيل الشفط.",
+            "C- To obtain a better mask fit.": "ج- لتوفير ملاءمة أفضل لقناع الوجه.",
+            "D- To reduce the risk of regurgitation.": "د- لتقليل خطر الارتجاع.",
+            "E- To protect the tongue from biting.": "هـ- لحماية اللسان من العض.",
+
+            "Complications of using the Oropharyngeal Airway include:": "من مضاعفات استخدام مجرى الهواء الفموي البلعومي:",
+            "A- Iatrogenic trauma and airway hyperreactivity.": "أ- الصدمة العلاجية المنشأ (iatrogenic trauma) وفرط تفاعل مجرى الهواء.",
+            "B- Ulceration and necrosis of oropharyngeal structures.": "ب- تقرح ونخر هياكل البلعوم الفموي.",
+            "C- Dental injury.": "ج- إصابة الأسنان.",
+
+            "Which oropharyngeal airway is the most frequently used and has a tubular channel for air exchange and suctioning?": "أي من مجاري الهواء الفموية التالية هو الأكثر استخداماً وله قناة أنبوبية لتبادل الهواء والشفط؟",
+            "A- Berman Airway.": "أ- مجرى الهواء بيرمان (Berman Airway).",
+            "B- Patil-Syracuse Endoscopic Airway.": "ب- مجرى الهواء التنظيري باتيل-سيراكيوز (Patil-Syracuse Endoscopic Airway).",
+            "C- Guedel Airway.": "ج- مجرى الهواء جيديل (Guedel Airway).",
+            "D- Nasopharyngeal Airway.": "د- مجرى الهواء الأنفي البلعومي (Nasopharyngeal Airway).",
+
+            "The Nasopharyngeal Airway (NPA) is better tolerated than OPA in which patient condition?": "مجرى الهواء الأنفي البلعومي (NPA) يُفضل على الفموي (OPA) في أي حالة للمريض؟",
+            "A- Patient is completely unconscious.": "أ- المريض فاقد الوعي تماماً.",
+            "B- Patient is awake or lightly sedated with intact airway reflexes.": "ب- المريض اليقظ أو المهدأ قليلاً ولديه انعكاسات مجرى هواء سليمة.",
+            "C- Patient with basilar skull fracture.": "ج- مريض بكسر في قاعدة الجمجمة.",
+            "D- Patient with known anticoagulation disorder.": "د- مريض باضطراب تخثر معروف.",
+
+            "When placing the Nasopharyngeal Airway, the pharyngeal end should be located:": "عند وضع مجرى الهواء الأنفي البلعومي، يجب أن تكون النهاية البلعومية (Pharyngeal end) موجودة:",
+            "A- Above the epiglottis.": "أ- فوق لسان المزمار.",
+            "B- Below the base of the tongue.": "ب- أسفل قاعدة اللسان.",
+            "C- Between the base of the tongue and the epiglottis.": "ج- بين قاعدة اللسان ولسان المزمار.",
+            "D- Inside the trachea.": "د- داخل القصبة الهوائية.",
+            
+            "The Nasopharyngeal Airway (NPA) is used for all the following EXCEPT:": "يستخدم مجرى الهواء الأنفي البلعومي (NPA) في جميع ما يلي باستثناء:",
+            "A- To facilitate suctioning.": "أ- لتسهيل الشفط.",
+            "B- As a guide for a nasogastric tube.": "ب- كدليل للأنبوب الأنفي المعدي.",
+            "C- To dilate the nasal passages prior to nasotracheal intubation.": "ج- لتوسيع الممرات الأنفية قبل التنبيب الأنفي الرغامي.",
+            "D- To maintain the airway during dental surgery.": "د- للحفاظ على مجرى الهواء أثناء جراحة الأسنان.",
+            "E- In cases of basilar skull fracture.": "هـ- في حالات كسر قاعدة الجمجمة.",
+
+            "Which of the following is a contraindication for the Nasopharyngeal Airway (NPA)?": "أي مما يلي يُعد مانع استخدام لمجرى الهواء الأنفي البلعومي (NPA)؟",
+            "A- History of nosebleeds requiring medical treatment.": "أ- تاريخ من نزيف الأنف يتطلب علاجًا طبيًا.",
+            "B- To apply continuous positive airway pressure (CPAP).": "ب- لتطبيق ضغط مجرى هوائي إيجابي مستمر (CPAP).",
+            "C- Patient is semi comatose.": "ج- المريض شبه الغيبوبة.",
+            "D- During and after pharyngeal surgery.": "د- أثناء وبعد جراحة البلعوم.",
+            
+            "Supraglottic Airway Devices (SADs) are defined as devices placed:": "تُعرّف أجهزة مجرى الهواء فوق المزمار (SADs) بأنها أجهزة تُوضع:",
+            "A- Inside the trachea.": "أ- داخل القصبة الهوائية.",
+            "B- Above the glottis and help in providing adequate ventilation.": "ب- فوق المزمار وتساعد في توفير تهوية كافية.",
+            "C- Immediately below the glottis.": "ج- أسفل المزمار مباشرة.",
+            "D- That function to stabilize the tongue.": "د- التي تعمل على تثبيت اللسان.",
+            
+            "All of the following are contraindications for using SADs EXCEPT:": "جميع ما يلي يُعد موانع لاستخدام أجهزة مجرى الهواء فوق المزمار باستثناء:",
+            "A- Airway edema.": "أ- الوذمة في مجرى الهواء (Airway edema).",
+            "B- Active vomiting.": "ب- القيء النشط.",
+            "C- Restricted mouth opening.": "ج- التقييد في فتح الفم.",
+            "D- Obesity.": "د- السمنة.",
+            "E- Lower incidence of sore throat.": "هـ- انخفاض معدل التهاب الحلق.",
+
+            "Which of the following devices is classified as a Cuffless SAD?": "أي من الأجهزة التالية يُصنف ضمن أجهزة مجرى الهواء فوق المزمار غير المزودة بكفة (Cuffless SADs)؟",
+            "A- LMA Classic.": "أ- قناع الحنجرة الكلاسيكي (LMA Classic).",
+            "B- LMA Proseal.": "ب- قناع الحنجرة بروسيل (LMA Proseal).",
+            "C- i-gel.": "ج- آي-جيل (i-gel).",
+            "D- Combitube.": "د- الكومبيتيوب (Combitube).",
+
+            "The LMA Proseal device is classified under which generation (Classification of SADs)?": "جهاز LMA Proseal يصنف ضمن أي جيل (تصنيف SADs)؟",
+            "A- First Generation.": "أ- الجيل الأول (First Generation).",
+            "B- Second Generation.": "ب- الجيل الثاني (Second Generation).",
+            "C- Third Generation.": "ج- الجيل الثالث (Third Generation).",
+            "D- Fourth Generation.": "د- الجيل الرابع (Fourth Generation).",
+
+            "Which of the following devices is classified as a SAD with a 'Channeled Suction Port'?": "أي من الأجهزة التالية يصنف ضمن أجهزة مجرى الهواء فوق المزمار 'المزودة بقناة للشفط' (Channeled Suction Port)؟",
+            "A- LMA Classic.": "أ- قناع الحنجرة الكلاسيكي (LMA Classic).",
+            "B- LMA Fastrack.": "ب- قناع الحنجرة فاستراك (LMA Fastrack).",
+            "C- i-gel.": "ج- آي-جيل (i-gel).",
+            "D- LMA Proseal.": "د- قناع الحنجرة بروسيل (LMA Proseal).",
+
+            // Lecture 2 Translations (New)
+            "What is the key distinguishing design feature of Second-generation Supraglottic Airway Devices (SADs) compared to first-generation SADs?": "ما هي الميزة التصميمية الرئيسية التي تميز أجهزة مجرى الهواء فوق المزمار من الجيل الثاني (SADs) مقارنة بالجيل الأول؟",
+            "A- They include the original LMA Classic.": "أ- تتضمن قناع الحنجرة الكلاسيكي الأصلي (LMA Classic).",
+            "B- They have a single ventilation channel.": "ب- لديها قناة تهوية واحدة.",
+            "C- They have specific design features to reduce the risk of aspiration with separation of ventilatory and gastric access channels.": "ج- لديها ميزات تصميم محددة لتقليل خطر الشفط مع فصل قنوات التهوية عن قنوات الوصول المعدي.",
+            "D- They require tracheal intubation for hands-free airway maintenance.": "د- تتطلب التنبيب الرغامي للحفاظ على مجرى الهواء بدون استخدام اليدين.",
+
+            "Which of the following SADs are classified as Second-generation devices?": "أي من أجهزة مجرى الهواء فوق المزمار (SADs) التالية تصنف على أنها أجهزة من الجيل الثاني؟",
+            "A- LMA Classic and LMA Unique.": "أ- LMA Classic و LMA Unique.",
+            "B- LMA ProSeal and i-gel.": "ب- LMA ProSeal و i-gel.",
+            "C- LMA Flexible and LMA Fastrach.": "ج- LMA Flexible و LMA Fastrach.",
+            "D- Combitube and King LT.": "د- Combitube و King LT.",
+
+            "One significant advantage of SADs compared to tracheal intubation is:": "إحدى المزايا الهامة لأجهزة SADs مقارنة بالتنبيب الرغامي هي:",
+            "A- They require direct visualization of the larynx for placement.": "أ- تتطلب رؤية مباشرة للحنجرة لوضعها.",
+            "B- Increased speed and ease of placement, even by less experienced operators.": "ب- زيادة السرعة وسهولة الوضع، حتى من قبل المشغلين الأقل خبرة.",
+            "C- Decreased cardiovascular stability on insertion.": "ج- انخفاض الاستقرار القلبي الوعائي عند الإدخال.",
+            "D- They are only suitable for experienced operators.": "د- إنها مناسبة فقط للمشغلين ذوي الخبرة.",
+
+            "Which of the following is NOT an advantage provided by Supraglottic Airway Devices?": "أي مما يلي ليس ميزة توفرها أجهزة مجرى الهواء فوق المزمار؟",
+            "A- Minimal rise in intraocular pressure on insertion.": "أ- الحد الأدنى من الارتفاع في ضغط العين عند الإدخال.",
+            "B- Lower frequency of coughing during emergence.": "ب- انخفاض تكرار السعال أثناء الإفاقة.",
+            "C- Can be placed without direct visualization of the larynx.": "ج- يمكن وضعها دون رؤية مباشرة للحنجرة.",
+            "D- Requires more time to place compared to tracheal intubation.": "د- يتطلب وقتًا أطول لوضعه مقارنة بالتنبيب الرغامي.",
+
+            "In the 'can't intubate, can't ventilate' scenario, what is the recommended approach regarding SADs?": "في سيناريو 'لا يمكن تنبيب، لا يمكن تهوية'، ما هو النهج الموصى به بخصوص أجهزة SADs؟",
+            "A- Immediate surgical cricothyrotomy is mandatory.": "أ- بضع الغشاء الحلقي الدرقي الجراحي الفوري إلزامي.",
+            "B- The decision to use SADs should be made early to gain time while attempting to secure a definite airway.": "ب- يجب اتخاذ قرار استخدام أجهزة SADs مبكراً لكسب الوقت أثناء محاولة تأمين مجرى هواء قطعي.",
+            "C- SADs should be avoided as they cannot act as a conduit for intubation.": "ج- يجب تجنب أجهزة SADs لأنها لا تستطيع أن تعمل كقناة للتنبيب.",
+            "D- Only first-generation SADs should be considered.": "د- يجب النظر فقط في أجهزة SADs من الجيل الأول.",
+
+            "First-generation SADs are generally contraindicated in patients with full stomachs or prone to reflux because:": "يُمنع استخدام أجهزة SADs من الجيل الأول بشكل عام في المرضى الذين لديهم معدة ممتلئة أو عرضة للارتجاع لأن:",
+            "A- They require muscle relaxants.": "أ- تتطلب مرخيات عضلات.",
+            "B- They normally provide little or no protection against aspiration of refluxed gastric contents.": "ب- لا توفر عادةً حماية تذكر أو لا توفر حماية ضد شفط محتويات المعدة المرتجعة.",
+            "C- They are more difficult to place than tracheal tubes.": "ج- وضعها أصعب من الأنابيب الرغامية.",
+            "D- They cause severe airway hyperreactivity.": "د- تسبب فرط تفاعل شديد في مجرى الهواء.",
+
+            "Second-generation SADs improve safety by offering:": "تعمل أجهزة SADs من الجيل الثاني على تحسين السلامة من خلال توفير:",
+            "A- Lower cuff seal pressure.": "أ- ضغط إغلاق كفة منخفض.",
+            "B- Increased risk of gastric gas insufflation.": "ب- زيادة خطر انتفاخ المعدة بالغاز.",
+            "C- Gastric access and drain tube.": "ج- قناة وصول معدية وأنبوب تصريف.",
+            "D- No 'bite block' feature.": "د- لا تحتوي على ميزة 'مانع العض'.",
+
+            "The Laryngeal Mask Airway (LMA) comprises a wide-bore tube with an elliptical inflatable cuff designed to seal around the:": "يتألف قناع الحنجرة (LMA) من أنبوب بقطر واسع مع كفة بيضاوية قابلة للنفخ مصممة للإغلاق حول:",
+            "A- Trachea.": "أ- القصبة الهوائية.",
+            "B- Oropharynx.": "ب- البلعوم الفموي.",
+            "C- Nasopharynx.": "ج- البلعوم الأنفي.",
+            "D- Laryngeal inlet.": "د- مدخل الحنجرة.",
+
+            "Which patient condition is a contraindication for using the Laryngeal Mask Airway (LMA)?": "أي حالة مريض تُعد مانع استخدام لقناع الحنجرة (LMA)؟",
+            "A- Small oral aperture.": "أ- فتحة الفم صغيرة.",
+            "B- Possibility of reflux of gastric content (e.g., morbid obesity).": "ب- احتمالية ارتجاع محتويات المعدة (مثل السمنة المفرطة).",
+            "C- Patients with poor lung compliance or COPD.": "ج- المرضى الذين يعانون من ضعف امتثال الرئة (poor lung compliance) أو مرض الانسداد الرئوي المزمن (COPD).",
+            "D- Oropharyngeal mass.": "د- كتلة في البلعوم الفموي.",
+
+            "The LMA ProSeal is primarily characterized by which feature that makes it a Second-generation SAD?": "ما هي الميزة التي تميز LMA ProSeal بشكل أساسي وتجعله جهاز SAD من الجيل الثاني؟",
+            "A- It is a disposable form of the classical LMA.": "أ- هو شكل يمكن التخلص منه من LMA الكلاسيكي.",
+            "B- It has wire-reinforced tubing.": "ب- يحتوي على أنبوب مقوى بالأسلاك.",
+            "C- It includes a Gastric suction port and a built-in bite block.": "ج- يتضمن منفذ شفط معدي (Gastric suction port) ومانع عض مدمج (built-in bite block).",
+            "D- It is designed to guide blind, difficult intubations.": "د- هو مصمم لتوجيه التنبيب الصعب الأعمى.",
+
+            "Which LMA is specifically designed as an Intubating LMA to guide blind, difficult intubations?": "أي قناع حنجري (LMA) مصمم خصيصاً كـ LMA للتنبيب (Intubating LMA) لتوجيه عمليات التنبيب الصعبة والعمياء؟",
+            "A- LMA Classic.": "أ- LMA Classic.",
+            "B- LMA Flexible.": "ب- LMA Flexible.",
+            "C- LMA Unique.": "ج- LMA Unique.",
+            "D- LMA Fastrach.": "د- LMA Fastrach.",
+
+            "A disadvantage common to the LMA Supreme and LMA ProSeal is:": "أحد العيوب المشتركة لـ LMA Supreme و LMA ProSeal هو:",
+            "A- High Oropharyngeal Seal Pressure (OSP).": "أ- ضغط إغلاق بلعومي فموي مرتفع (OSP).",
+            "B- They are bulky, and folding of the mask can obstruct the gastric port.": "ب- هي ضخمة، وقد يؤدي طي القناع إلى إعاقة المنفذ المعدي.",
+            "C- They are only made from Polyvinyl chloride.": "ج- هي مصنوعة فقط من كلوريد البولي فينيل.",
+            "D- Increased pharyngolaryngeal trauma.": "د- زيادة الصدمة البلعومية الحنجرية.",
+
+            "A low Oropharyngeal Seal Pressure (OSP) is a disadvantage for which of the following LMA types?": "ضغط إغلاق بلعومي فموي منخفض (OSP) هو عيب لأي من أنواع LMA التالية؟",
+            "A- LMA Classic.": "أ- LMA Classic.",
+            "B- LMA Unique.": "ب- LMA Unique.",
+            "C- LMA Flexible.": "ج- LMA Flexible.",
+            "D- All of the above.": "د- جميع ما سبق.",
+
+            "The i-gel is made from which type of material?": "الـ i-gel مصنوع من أي نوع من المواد؟",
+            "A- Black rubber.": "أ- المطاط الأسود.",
+            "B- Polyvinyl chloride.": "ب- كلوريد البولي فينيل.",
+            "C- Thermoplastic elastomer (soft gel-like material).": "ج- الإيلاستومر الحراري (مادة تشبه الهلام الناعم).",
+            "D- Wire-reinforced silicone.": "د- سيليكون مقوى بالأسلاك.",
+
+            "A key feature of the i-gel that contributes to its ease of use is:": "إحدى الميزات الرئيسية لجهاز i-gel التي تساهم في سهولة استخدامه هي:",
+            "A- It has an elliptical inflatable cuff.": "أ- يحتوي على كفة بيضاوية قابلة للنفخ.",
+            "B- It is noninflatable and anatomically-molded.": "ب- هو غير قابل للنفخ ومقولب تشريحياً.",
+            "C- It requires direct visualization for insertion.": "ج- يتطلب رؤية مباشرة للإدخال.",
+            "D- It does not have an integral bite block.": "د- لا يحتوي على مانع عض مدمج.",
+
+            "Which of the following is an advantage of the i-gel device?": "أي مما يلي هو ميزة لجهاز i-gel؟",
+            "A- Increased incidence of downfolding of the epiglottis.": "أ- زيادة معدل طي لسان المزمار للأسفل.",
+            "B- Higher incidence of trauma.": "ب- معدل أعلى للإصابات.",
+            "C- Integral bite block reduces the possibility of airway obstruction.": "ج- مانع العض المدمج يقلل من احتمالية انسداد مجرى الهواء.",
+            "D- Gastric channel is only available in pediatric sizes.": "د- القناة المعدية متاحة فقط في أحجام الأطفال.",
+
+            "What is the specific limitation regarding the gastric channel in the i-gel device?": "ما هو القيد المحدد بخصوص القناة المعدية في جهاز i-gel؟",
+            "A- The gastric channel is not present in adult sizes.": "أ- القناة المعدية غير موجودة في أحجام البالغين.",
+            "B- The gastric channel is only present in the Size 6 i-gel.": "ب- القناة المعدية موجودة فقط في i-gel مقاس 6.",
+            "C- The gastric channel is only available in pediatric sizes.": "ج- القناة المعدية متاحة فقط في أحجام الأطفال.",
+            "D- The Size 1 i-gel does not have a gastric channel.": "د- i-gel مقاس 1 لا يحتوي على قناة معدية.",
+
+            "The Tracheal Esophageal Combitube (Combitube) is functional whether introduced into the esophagus or the trachea because:": "الكومبيتيوب (Combitube) يعمل سواء تم إدخاله في المريء أو القصبة الهوائية لأن:",
+            "A- It has a single, adjustable cuff.": "أ- لديه كفة واحدة قابلة للتعديل.",
+            "B- It has two separate lumens for ventilation.": "ب- لديه تجويفان منفصلان للتهوية.",
+            "C- It only requires a full stomach.": "ج- يتطلب فقط معدة ممتلئة.",
+            "D- It is only available in one size.": "د- هو متاح بحجم واحد فقط.",
+
+            "The Combitube is available in two sizes: the 41 Fr size and the 37 Fr size. The 37 Fr size is used for:": "الكومبيتيوب متاح بحجمين: مقاس 41 فرنسي ومقاس 37 فرنسي. مقاس 37 فرنسي يستخدم لـ:",
+            "A- Large adults.": "أ- البالغين الكبار.",
+            "B- Adults 4 to 6 feet tall.": "ب- البالغين الذين يتراوح طولهم بين 4 و 6 أقدام (حوالي 122 إلى 183 سم).",
+            "C- Neonates and infants.": "ج- المواليد والرضع.",
+            "D- Pediatric patients only.": "د- مرضى الأطفال فقط.",
+
+            "The Combitube is indicated for use in all of the following scenarios EXCEPT:": "يستطب استخدام الكومبيتيوب في جميع السيناريوهات التالية باستثناء:",
+            "A- Massive upper gastrointestinal bleeding.": "أ- النزيف الهضمي العلوي الهائل.",
+            "B- Airway protection from regurgitation.": "ب- حماية مجرى الهواء من الارتجاع.",
+            "C- Acute bronchospasm.": "ج- التشنج القصبي الحاد.",
+            "D- Routine anesthesia in low-risk patients.": "د- التخدير الروتيني في المرضى ذوي المخاطر المنخفضة.",
+
+            "What is a distinguishing characteristic of the King LT (Laryngeal Tube)?": "ما هي السمة المميزة لجهاز King LT (أنبوب الحنجرة)؟",
+            "A- It is a single-use SAD.": "أ- هو SAD يستخدم لمرة واحدة.",
+            "B- It is a specialized tracheal intubation device.": "ب- هو جهاز تنبيب رغامي متخصص.",
+            "C- It is a reusable supraglottic airway.": "ج- هو مجرى هوائي فوق المزمار قابل لإعادة الاستخدام.",
+            "D- It has an open distal end for intubation.": "د- لديه نهاية بعيدة مفتوحة للتنبيب.",
+
+            "What is the initial crucial step before inserting any cuffed supraglottic device (LMA or LTA)?": "ما هي الخطوة الحاسمة الأولية قبل إدخال أي جهاز فوق مزماري ذو كفة (LMA أو LTA)؟",
+            "A- Insert the device in the sniffing position.": "أ- إدخال الجهاز في وضع الاستنشاق.",
+            "B- Lubricate the tip of the device.": "ب- تليين طرف الجهاز.",
+            "C- Inflate cuffs fully to check for leaks before deflating.": "ج- نفخ الكفات بالكامل للتحقق من التسربات قبل تفريغها.",
+            "D- Open the patient's mouth widely.": "د- فتح فم المريض على نطاق واسع.",
+
+            "The patient's head should be placed in which position for the insertion of LMA and i-gel?": "يجب وضع رأس المريض في أي وضع لإدخال LMA و i-gel؟",
+            "A- Neutral position.": "أ- الوضع المحايد.",
+            "B- Sniffing position.": "ب- وضع الاستنشاق (Sniffing position).",
+            "C- Head down position.": "ج- وضع الرأس للأسفل.",
+            "D- Lateral recovery position.": "د- وضع الإفاقة الجانبي.",
+
+            "Which of the following methods is used to confirm proper supraglottic tube placement?": "أي من الطرق التالية تستخدم لتأكيد الوضع الصحيح لأنبوب مجرى الهواء فوق المزمار؟",
+            "A- Continuous CO2 waveform on capnography.": "أ- شكل موجة $CO_2$ المستمر على تخطيط ثاني أكسيد الكربون (capnography).",
+            "B- Auscultation of air movement over the chest.": "ب- تسمع حركة الهواء فوق الصدر.",
+            "C- Visible chest rise and fall.": "ج- صعود وهبوط مرئي للصدر.",
+            "D- Stable or improving oxygenation.": "د- استقرار أو تحسن مستوى الأكسجة.",
+
+            "According to Table 5.2, what is the maximum recommended cuff inflation volume for a Size 4 LMA (Adult 50-70 kg)?": "وفقًا للجدول 5.2، ما هو الحد الأقصى الموصى به لحجم نفخ الكفة لقناع LMA مقاس 4 (للبالغين 50-70 كجم)؟",
+            "A- Up to 20 mL.": "أ- حتى 20 مل.",
+            "B- Up to 30 mL.": "ب- حتى 30 مل.",
+            "C- Up to 40 mL.": "ج- حتى 40 مل.",
+            "D- Up to 60 mL.": "د- حتى 60 مل.",
+            // End of All Translations
+        };
+
+
+        let currentQuestions = [];
+        const allPages = document.querySelectorAll('.page');
+        const quizContainer = document.querySelector("#quiz-page .container");
+        const quizTitleElement = document.getElementById('quiz-title');
+        const loadingTextElement = document.querySelector('.loading-text');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const bodyElement = document.body;
+        const toggleIcon = darkModeToggle.querySelector('i');
+
+        // --- New Modal/Flow Control Functions ---
+
+        function validateSuccess() {
+            document.getElementById('splash-modal').style.display = 'none';
+            document.getElementById('darkModeToggle').style.display = 'flex'; // Show dark mode toggle
+            document.body.classList.remove('no-scroll');
+            // Check theme settings and then show main page
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                 setDarkMode(true);
+             } else {
+                 setDarkMode(false);
+             }
+            showPage('main-buttons-page');
+        }
+
+        function showFailureMessage() {
+            document.getElementById('splash-modal').style.display = 'none';
+            document.getElementById('failure-message').style.display = 'flex';
+            document.body.classList.add('no-scroll'); // Keep scroll locked
+        }
+        
+        // --- End New Modal/Flow Control Functions ---
+
+
+        function showPage(pageId) {
+            allPages.forEach(page => page.classList.remove('visible'));
+            setTimeout(() => {
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) {
+                    targetPage.classList.add('visible');
+                    window.scrollTo(0, 0);
+                } else {
+                    document.getElementById('main-buttons-page').classList.add('visible');
+                }
+            }, 50);
+        }
+
+        function loadQuiz(quizType) {
+            currentQuestions = quizData[quizType] || [];
+            
+            if (quizType === 'Lecture 1') {
+                 quizTitleElement.innerHTML = `<i class="fas fa-lungs"></i> Lecture 1 Quiz (25 Questions)`;
+            } else if (quizType === 'Lecture 2') {
+                 quizTitleElement.innerHTML = `<i class="fas fa-mask"></i> Lecture 2 Quiz (25 Questions)`;
+            } else {
+                quizTitleElement.innerHTML = `<i class="fas fa-flask-vial"></i> Error loading quiz`;
+            }
+
+
+            quizContainer.innerHTML = '';
+            loadingTextElement.style.display = 'block';
+            showPage('quiz-page');
+
+            setTimeout(() => {
+                loadingTextElement.style.display = 'none';
+                if (currentQuestions.length > 0) {
+                    currentQuestions.forEach((q, index) => {
+                        const questionDiv = createQuestionElement(q, index);
+                        quizContainer.appendChild(questionDiv);
+                    });
+                } else {
+                    quizContainer.innerHTML = "<p style='text-align: center; color: var(--text-light);'>Sorry, no questions are currently available for this lecture.</p>";
+                }
+            }, 300);
+        }
+
+        function createQuestionElement(q, index) {
+            const questionDiv = document.createElement("div");
+            questionDiv.classList.add("question");
+            questionDiv.style.setProperty('--question-index', index);
+            questionDiv.innerHTML = `<h2 class="original-question" dir="ltr">(${index + 1}) ${q.question}</h2>
+                                     <h2 class="translated-question" style="display: none;"></h2>`;
+            const optionsList = document.createElement("ul");
+            optionsList.classList.add("options");
+            q.options.forEach((option, i) => {
+                const button = document.createElement("button");
+                // Ensure options are displayed LTR by default
+                button.innerHTML = `<span class="original-option" dir="ltr">${option}</span>
+                                    <span class="translated-option" dir="rtl" style="display: none;"></span>`;
+                button.addEventListener("click", () => handleAnswer(button, i, q.correct, optionsList));
+                const listItem = document.createElement("li");
+                listItem.appendChild(button);
+                optionsList.appendChild(listItem);
+            });
+            questionDiv.appendChild(optionsList);
+
+            const translateContainer = document.createElement("div");
+            translateContainer.classList.add("translate-container");
+
+            const translateButton = document.createElement("button");
+            translateButton.classList.add("translate-button");
+            translateButton.textContent = "ترجمة";
+            translateButton.onclick = () => translateQuestion(questionDiv, q);
+            translateContainer.appendChild(translateButton);
+
+            const untranslateButton = document.createElement("button");
+            untranslateButton.classList.add("untranslate-button");
+            untranslateButton.textContent = "الغاء الترجمة";
+            untranslateButton.onclick = () => untranslateQuestion(questionDiv, q);
+            translateContainer.appendChild(untranslateButton);
+
+            questionDiv.appendChild(translateContainer);
+
+            return questionDiv;
+        }
+
+        function handleAnswer(selectedButton, selectedIndex, correctAnswerIndex, optionsList) {
+            const buttons = optionsList.querySelectorAll("button");
+            buttons.forEach((button, index) => {
+                button.disabled = true;
+                if (index === correctAnswerIndex) { button.classList.add("correct"); }
+                else if (button === selectedButton) { button.classList.add("wrong"); }
+            });
+            const nextQuestion = optionsList.closest('.question').nextElementSibling;
+             if(nextQuestion && nextQuestion.classList.contains('question')){
+                setTimeout(() => {
+                    nextQuestion.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 600);
+             }
+        }
+
+        function getLocalTranslation(text) {
+             return localTranslations[text] || null;
+        }
+
+        function translateQuestion(questionDiv, q) {
+            const translatedQuestionEl = questionDiv.querySelector(".translated-question");
+            const originalQuestionEl = questionDiv.querySelector(".original-question");
+            const optionButtons = questionDiv.querySelectorAll(".options button");
+
+            const questionNumberMatch = originalQuestionEl.textContent.match(/^\((\d+)\)\s*/);
+            const questionNumberPrefix = questionNumberMatch ? questionNumberMatch[0] : '';
+
+            const translatedQText = getLocalTranslation(q.question);
+            if (translatedQText) {
+                translatedQuestionEl.textContent = `${questionNumberPrefix}${translatedQText}`;
+                translatedQuestionEl.style.display = "block";
+                originalQuestionEl.style.display = "none";
+                translatedQuestionEl.dataset.translated = "true";
+            }
+
+
+            optionButtons.forEach((button, index) => {
+                const originalOptionEl = button.querySelector(".original-option");
+                const translatedOptionEl = button.querySelector(".translated-option");
+                 const originalOptionText = q.options[index];
+                 // Extract prefix (like A-, B., etc.) from original text
+                 const optionPrefixMatch = originalOptionText.match(/^[a-dA-D][)._]?\s*/);
+                 const optionPrefix = optionPrefixMatch ? optionPrefixMatch[0] : '';
+                 // Get the rest of the original text for key lookup
+                 const originalTextWithoutPrefix = originalOptionText.replace(optionPrefix, '').trim();
+
+
+                let translatedOptText = getLocalTranslation(originalOptionText); // Try to get translation for full text first
+                if (!translatedOptText) {
+                   translatedOptText = getLocalTranslation(originalTextWithoutPrefix); // Fallback to text without prefix
+                }
+
+                if (translatedOptText) {
+                    translatedOptionEl.textContent = `${optionPrefix}${translatedOptText}`;
+                    translatedOptionEl.style.display = "inline";
+                    originalOptionEl.style.display = "none";
+                    translatedOptionEl.dataset.translated = "true";
+                }
+            });
+        }
+
+        function untranslateQuestion(questionDiv, q) {
+            const translatedQuestionEl = questionDiv.querySelector(".translated-question");
+            const originalQuestionEl = questionDiv.querySelector(".original-question");
+            const optionButtons = questionDiv.querySelectorAll(".options button");
+
+            translatedQuestionEl.style.display = 'none';
+            originalQuestionEl.style.display = 'block';
+
+            optionButtons.forEach((button) => {
+                button.querySelector(".original-option").style.display = 'inline';
+                button.querySelector(".translated-option").style.display = 'none';
+            });
+        }
+
+        function setDarkMode(isDark) {
+             if (isDark) {
+                bodyElement.classList.add('dark-mode');
+                toggleIcon.classList.remove('fa-sun');
+                toggleIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                bodyElement.classList.remove('dark-mode');
+                toggleIcon.classList.remove('fa-moon');
+                toggleIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            setDarkMode(!bodyElement.classList.contains('dark-mode'));
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+             // Initial state: Show splash modal and lock scroll
+             document.body.classList.add('no-scroll');
+        });
+    </script>
+
+</body>
+</html>
+
