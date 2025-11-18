@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار التشخيص الطبي</title>
+    <title>تشخيص صور الباطنية</title>
     <!-- تحميل مكتبة Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- خط Cairo للغة العربية و Inter للوجو الإنجليزي -->
@@ -367,7 +367,7 @@
             let quizHTML = quizData.map(item => `
                 <div id="card-${item.id}" class="bg-white shadow-lg rounded-xl p-5 mb-8 transition-shadow duration-300 hover:shadow-xl border border-gray-100">
                     <h2 class="text-xl font-semibold text-indigo-700 mb-4 border-b pb-2">
-                        صورة التشخيص #${item.id}
+                        الصورة رقم #${item.id}
                     </h2>
 
                     <!-- الصورة التشخيصية -->
@@ -391,7 +391,7 @@
                     <!-- زر الفحص -->
                     <button onclick="checkDiagnosis(${item.id}, '${item.correctDiagnosis.replace(/'/g, "\\'")}')"
                             class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition duration-300 transform hover:scale-[1.01] shadow-md">
-                        فحص التشخيص
+                        تأكد من الاجابة
                     </button>
 
                     <!-- رسالة النتيجة -->
