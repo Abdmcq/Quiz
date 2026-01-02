@@ -1,89 +1,61 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-236N37LHFR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-236N37LHFR');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-236N37LHFR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-236N37LHFR');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تشخيص صور الباطنية - الفاينل</title>
-    <!-- تحميل مكتبة Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- خط Cairo للغة العربية و Inter للوجو الإنجليزي -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Inter:wght@900&display=swap');
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #f3f4f6; /* خلفية رمادية فاتحة */
+            background-color: #f3f4f6;
         }
         .logo-font {
             font-family: 'Inter', sans-serif;
         }
-
-        /* تنسيق خاص للوحة البداية */
         .typing-container {
-            --chars: 17; /* طول النص: "Abdulrahman Hasan" */
-            width: calc(var(--chars) * 1ch); /* عرض النص الكامل */
+            --chars: 17;
+            width: calc(var(--chars) * 1ch);
             overflow: hidden;
             white-space: nowrap;
             display: inline-block;
-            border-right: .15em solid #4F46E5; /* المؤشر الوامض بلون Indigo */
-            
-            /* دورة مستمرة: كتابة -> توقف -> مسح */
+            border-right: .15em solid #4F46E5;
             animation: type-delete-cycle 8s steps(var(--chars)) infinite, 
                        blink 0.5s step-end infinite;
         }
-
         @keyframes type-delete-cycle {
-            /* 0% - 40%: Typing */
             0% { width: 0; } 
             40% { width: calc(var(--chars) * 1ch); } 
-            
-            /* 40% - 60%: Pause */
             60% { width: calc(var(--chars) * 1ch); } 
-
-            /* 60% - 100%: Deleting (and back to 0% for restart) */
             100% { width: 0; } 
         }
-        
         @keyframes blink {
             from, to { border-color: transparent }
             50% { border-color: #4F46E5; }
         }
-
-        /* تخصيص شريط التقدم ليكون متناسقاً مع لون المشغل */
-        input[type="range"]::-webkit-slider-thumb {
-            background: #14B8A6; /* Teal-500 */
-        }
-        input[type="range"]::-moz-range-thumb {
-            background: #14B8A6; /* Teal-500 */
-        }
-        .accent-teal-500 {
-            accent-color: #14B8A6; /* Teal-500 */
-        }
+        input[type="range"]::-webkit-slider-thumb { background: #14B8A6; }
+        input[type="range"]::-moz-range-thumb { background: #14B8A6; }
+        .accent-teal-500 { accent-color: #14B8A6; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- العنصر الرئيسي الذي يحمل جميع الشاشات -->
-    <div id="app" class="flex-grow flex flex-col">
-        <!-- يتم تحميل محتوى الشاشات هنا بواسطة JavaScript -->
-    </div>
+    <div id="app" class="flex-grow flex flex-col"></div>
 
-    <!-- شريط الحقوق الثابت في الأسفل -->
     <footer class="bg-gray-800 text-white text-center p-3 text-sm">
         <p>اعداد عبدالرحمن حسن</p>
     </footer>
 
     <script>
-        // قائمة التشغيل للأغاني
         const playlist = [
             { id: 1, src: "https://files.catbox.moe/q2lyxo.mp3", title: "راغب علامة & اليسا" },
             { id: 2, src: "https://files.catbox.moe/xbgi3g.mp3", title: "احلفك بالمحبة" },
@@ -93,7 +65,6 @@
             { id: 6, src: "https://files.catbox.moe/nvbzlz.mp3", title: "هيثم يوسف" }
         ];
 
-        // بيانات الاختبار (تم التحديث بناءً على طلبك)
         const quizData = [
             { id: 1, image: "https://i.postimg.cc/jjwKqZNj/EUI_OIU_001.jpg", correctDiagnosis: "Jaundice" },
             { id: 2, image: "https://i.postimg.cc/GpWR4GJH/EUI_OIU_002.jpg", correctDiagnosis: "Caput medusae" },
@@ -149,25 +120,18 @@
             { id: 52, image: "https://i.postimg.cc/W1tcSX5z/EUI_OIU_050.jpg", correctDiagnosis: "esophagogastric junction zline" }
         ];
 
-        let results = {}; // لحفظ نتائج التشخيص
+        let results = {};
         const appDiv = document.getElementById('app');
-        
-        // متغيرات مشغل الموسيقى
         let audioPlayer = new Audio();
         let currentTrackIndex = 0;
         let isPlayerInitialized = false;
         
-        // دالة لخلط عناصر المصفوفة (لمنع التسلسل)
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
             }
         }
-
-        // ----------------------------------------------------------------
-        // وظائف مشغل الموسيقى
-        // ----------------------------------------------------------------
 
         function initializeAudioPlayer() {
             if (isPlayerInitialized) return;
@@ -202,11 +166,8 @@
         }
         
         function togglePlayPause() {
-            if (audioPlayer.paused) {
-                audioPlayer.play().catch(e => console.error("Error playing audio:", e));
-            } else {
-                audioPlayer.pause();
-            }
+            if (audioPlayer.paused) { audioPlayer.play().catch(e => console.error(e)); } 
+            else { audioPlayer.pause(); }
             updatePlayerUI();
         }
 
@@ -215,7 +176,7 @@
             currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
             audioPlayer.src = playlist[currentTrackIndex].src;
             audioPlayer.load();
-            audioPlayer.play().catch(e => console.error("Error playing audio:", e));
+            audioPlayer.play().catch(e => console.error(e));
             updatePlayerUI();
         }
 
@@ -224,28 +185,18 @@
             currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length; 
             audioPlayer.src = playlist[currentTrackIndex].src;
             audioPlayer.load();
-            audioPlayer.play().catch(e => console.error("Error playing audio:", e));
+            audioPlayer.play().catch(e => console.error(e));
             updatePlayerUI();
         }
 
-        function seek(value) {
-            if (!isNaN(audioPlayer.duration)) audioPlayer.currentTime = (value / 100) * audioPlayer.duration;
-        }
-        
-        function skipTime(time) {
-            audioPlayer.currentTime += time;
-        }
-
+        function seek(value) { if (!isNaN(audioPlayer.duration)) audioPlayer.currentTime = (value / 100) * audioPlayer.duration; }
+        function skipTime(time) { audioPlayer.currentTime += time; }
         function formatTime(seconds) {
             const min = Math.floor(seconds / 60);
             const sec = Math.floor(seconds % 60);
             return `${min}:${sec < 10 ? '0' : ''}${sec}`;
         }
         
-        // ----------------------------------------------------------------
-        // 1. شاشة البوابة (Gate Screen)
-        // ----------------------------------------------------------------
-
         function renderGateScreen() {
             if (isPlayerInitialized && !audioPlayer.paused) audioPlayer.pause();
             const typingText = "Abdulrahman Hasan"; 
@@ -285,10 +236,6 @@
             `;
         }
 
-        // ----------------------------------------------------------------
-        // 2. شاشة الرفض (Failure Screen)
-        // ----------------------------------------------------------------
-
         function renderFailureScreen() {
             if (isPlayerInitialized && !audioPlayer.paused) audioPlayer.pause();
             appDiv.innerHTML = `
@@ -305,10 +252,6 @@
             `;
         }
 
-        // ----------------------------------------------------------------
-        // 3. شاشة الاختبار الرئيسية (Quiz Screen)
-        // ----------------------------------------------------------------
-
         function renderQuizScreen() {
             initializeAudioPlayer();
             shuffleArray(quizData); 
@@ -316,7 +259,12 @@
                 <div id="card-${item.id}" class="bg-white shadow-lg rounded-xl p-5 mb-8 transition-shadow duration-300 hover:shadow-xl border border-gray-100">
                     <h2 class="text-xl font-semibold text-indigo-700 mb-4 border-b pb-2">الصورة رقم #${index + 1}</h2>
                     <div class="w-full flex justify-center mb-6">
-                        <img src="${item.image}" alt="صورة تشخيص" class="rounded-lg shadow-md max-w-full h-auto object-cover" onerror="this.src='https://placehold.co/400x300?text=Image+Not+Found'">
+                        <!-- تم إضافة referrerpolicy لمنع حجب الصور من قبل موقع الرفع -->
+                        <img src="${item.image}" 
+                             referrerpolicy="no-referrer"
+                             alt="صورة تشخيص" 
+                             class="rounded-lg shadow-md max-w-full h-auto object-contain max-h-[400px]" 
+                             onerror="this.src='https://placehold.co/400x300?text=Image+Not+Found'">
                     </div>
                     <div class="mb-4">
                         <label for="diagnosis-${item.id}" class="block text-gray-700 font-medium mb-2">اكتب التشخيص هنا</label>
@@ -389,7 +337,6 @@
         }
 
         function clearStatus(id) { document.getElementById(`status-${id}`).classList.add('hidden'); }
-
         function updateQuizSummary() {
             const totalItems = quizData.length;
             const correctCount = Object.values(results).filter(r => r === true).length;
