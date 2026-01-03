@@ -57,72 +57,73 @@
 
     <script>
         const playlist = [
-            { id: 1, src: "https://files.catbox.moe/q2lyxo.mp3", title: "راغب علامة & اليسا" },
-            { id: 2, src: "https://files.catbox.moe/xbgi3g.mp3", title: "احلفك بالمحبة" },
-            { id: 3, src: "https://files.catbox.moe/0l8qga.mp3", title: "يا هوى روح - وائل كافوري" },
-            { id: 4, src: "https://files.catbox.moe/t5x3ri.mp3", title: "وائل كافوري" },
-            { id: 5, src: "https://files.catbox.moe/i7huol.mp3", title: "نانسي عجرم" },
-            { id: 6, src: "https://files.catbox.moe/nvbzlz.mp3", title: "هيثم يوسف" }
+            { id: 1, src: "https://files.catbox.moe/7l5rmk.m4a", title: "ماجد المهندس" },
+            { id: 2, src: "https://files.catbox.moe/3omzzh.m4a", title: "بكل العمر" },
+            { id: 3, src: "https://files.catbox.moe/yj3nh1.mp3", title: "الحبيب" },
+            { id: 4, src: "https://files.catbox.moe/5nv92u.m4a", title: "بعيني" },
+            { id: 5, src: "https://files.catbox.moe/s2yksc.m4a", title: "ترك الروح" },
+            { id: 6, src: "https://files.catbox.moe/t5x3ri.mp3", title: "وائل كافوري" }
         ];
 
         const quizData = [
-            { id: 1, image: "https://i.postimg.cc/jjwKqZNj/EUI_OIU_001.jpg", correctDiagnosis: "Jaundice" },
-            { id: 2, image: "https://i.postimg.cc/GpWR4GJH/EUI_OIU_002.jpg", correctDiagnosis: "Caput medusae" },
-            { id: 3, image: "https://i.postimg.cc/ZqGmWpFB/EUI_OIU_003.jpg", correctDiagnosis: "Gynecomastia" },
-            { id: 4, image: "https://i.postimg.cc/GpWR4GJs/EUI_OIU_004.jpg", correctDiagnosis: "Palmar erythema" },
-            { id: 5, image: "https://i.postimg.cc/s2kzM79B/EUI_OIU_005.jpg", correctDiagnosis: "Normal duodenum" },
-            { id: 6, image: "https://i.postimg.cc/cJpWvwMY/EUI_OIU_006.jpg", correctDiagnosis: "Normal duodenum" },
-            { id: 7, image: "https://i.postimg.cc/PqgHCYzQ/EUI_OIU_007.jpg", correctDiagnosis: "duodenum ulcer" },
-            { id: 8, image: "https://i.postimg.cc/sX5r7xwp/EUI_OIU_008.jpg", correctDiagnosis: "Duodenal bulb" },
-            { id: 9, image: "https://i.postimg.cc/d1GYr34R/EUI_OIU_009.jpg", correctDiagnosis: "Gastric ulcer" },
-            { id: 10, image: "https://i.postimg.cc/pTKHzrqB/EUI_OIU_010.jpg", correctDiagnosis: "Gastric ulcer" },
-            { id: 11, image: "https://i.postimg.cc/85LSMctm/EUI_OIU_011.jpg", correctDiagnosis: "Gastric ulcer" },
-            { id: 12, image: "https://i.postimg.cc/xCL2M8t4/EUI_OIU_012.jpg", correctDiagnosis: "Gastric ulcer" },
-            { id: 13, image: "https://i.postimg.cc/1tDQwXJk/EUI_OIU_013.jpg", correctDiagnosis: "Polycystic kidney" },
-            { id: 14, image: "https://i.postimg.cc/nzqJBr3b/EUI_OIU_014.jpg", correctDiagnosis: "Bilateral renal stones" },
-            { id: 15, image: "https://i.postimg.cc/xCL2M86V/EUI_OIU_015.jpg", correctDiagnosis: "Prostatic hypertrophy" },
-            { id: 16, image: "https://i.postimg.cc/pTKHzrsH/EUI_OIU_016.jpg", correctDiagnosis: "myocardial infarction" },
-            { id: 17, image: "https://i.postimg.cc/FzmQZv69/EUI_OIU_017.jpg", correctDiagnosis: "myocardial infarction" },
-            { id: 18, image: "https://i.postimg.cc/kG9dcCH7/EUI_OIU_018.jpg", correctDiagnosis: "Atherosclerosis" },
-            { id: 19, image: "https://i.postimg.cc/QCbZYPLx/EUI_OIU_021.jpg", correctDiagnosis: "Prinzmetal angine" },
-            { id: 20, image: "https://i.postimg.cc/qq0dLrFC/EUI_OIU_019.jpg", correctDiagnosis: "Normal Sinus Rhythm" },
-            { id: 21, image: "https://i.postimg.cc/nrZtkxWz/EUI_OIU_020.jpg", correctDiagnosis: "Angina Pectoris" },
-            { id: 22, image: "https://i.postimg.cc/J0qCYgwH/EUI_OIU_022.jpg", correctDiagnosis: "ST depression (Angina pectoris)" },
-            { id: 23, image: "https://i.postimg.cc/Znczsgkx/EUI_OIU_023.jpg", correctDiagnosis: "ST Elevation" },
-            { id: 24, image: "https://i.postimg.cc/VvRPZTyB/EUI_OIU_024.png", correctDiagnosis: "Sinus Tachycardia" },
-            { id: 25, image: "https://i.postimg.cc/2ywN9Jpw/EUI_OIU_025.png", correctDiagnosis: "Sinus Bradycardia" },
-            { id: 26, image: "https://i.postimg.cc/qBXr7ttH/EUI_OIU_026.jpg", correctDiagnosis: "Atrial ectopic" },
-            { id: 27, image: "https://i.postimg.cc/wxczBttH/EUI_OIU_029.jpg", correctDiagnosis: "Atrial ectopic" },
-            { id: 28, image: "https://i.postimg.cc/RCQm033z/EUI_OIU_027.jpg", correctDiagnosis: "Atrial fibrillation" },
-            { id: 29, image: "https://i.postimg.cc/Y2f7S44H/EUI_OIU_028.jpg", correctDiagnosis: "Supra Ventricular Tachycardia" },
-            { id: 30, image: "https://i.postimg.cc/NG7t0yy0/EUI_OIU_030.jpg", correctDiagnosis: "Ventricular Ectopic" },
-            { id: 31, image: "https://i.postimg.cc/v8Lym11T/EUI_OIU_031.jpg", correctDiagnosis: "Ventricular Ectopic (Bigemeni)" },
-            { id: 32, image: "https://i.postimg.cc/Y2f7S44v/EUI_OIU_032.jpg", correctDiagnosis: "Ventricular Tachycardia" },
-            { id: 33, image: "https://i.postimg.cc/3rChwyyG/EUI_OIU_033.jpg", correctDiagnosis: "first degree heart block" },
-            { id: 34, image: "https://i.postimg.cc/05dvN66w/EUI_OIU_034.jpg", correctDiagnosis: "Type-1 second degree Heart block" },
-            { id: 35, image: "https://i.postimg.cc/ryCTpddW/EUI_OIU_035.jpg", correctDiagnosis: "Type-2 second degree Heart block" },
-            { id: 36, image: "https://i.postimg.cc/tCqjnXPV/EUI_OIU_036.jpg", correctDiagnosis: "3rd degree (complete heart block)" },
-            { id: 37, image: "https://i.postimg.cc/qMJT6knY/EUI_OIU_037.png", correctDiagnosis: "Right bundle branch block" },
-            { id: 38, image: "https://i.postimg.cc/65MNdDLM/EUI_OIU_038.png", correctDiagnosis: "left bundle branch block" },
-            { id: 39, image: "https://i.postimg.cc/Kv0yndrQ/EUI_OIU_039.jpg", correctDiagnosis: "Sick Sinus Syndrome" },
-            { id: 40, image: "https://i.postimg.cc/xT6SKWys/EUI_OIU_040.jpg", correctDiagnosis: "Tonsillitis" },
-            { id: 41, image: "https://i.postimg.cc/8PZVhqBn/EUI_OIU_041.jpg", correctDiagnosis: "Diphtheria" },
-            { id: 42, image: "https://i.postimg.cc/Wb5PMQwc/EUI_OIU_042.jpg", correctDiagnosis: "Bilateral Pneumonia" },
-            { id: 43, image: "https://i.postimg.cc/8PZVhqmz/EUI_OIU_043.jpg", correctDiagnosis: "Lobar Pneumonia" },
-            { id: 44, image: "https://i.postimg.cc/65MNdDfX/EUI_OIU_044.jpg", correctDiagnosis: "KUB renal stone" },
-            { id: 45, image: "https://i.postimg.cc/SNgpWwfN/EUI_OIU_045.jpg", correctDiagnosis: "Intravenous pyelogram" },
-            { id: 46, image: "https://i.postimg.cc/JztCKPpm/EUI_OIU_046.jpg", correctDiagnosis: "CT-scan of renal system" },
-            { id: 47, image: "https://i.postimg.cc/QdVZS0fX/EUI_OIU_047.jpg", correctDiagnosis: "CT-scan of renal system" },
-            { id: 48, image: "https://i.postimg.cc/CxdpJmcw/EUI_OIU_048.jpg", correctDiagnosis: "KUB Vesical stone" },
-            { id: 49, image: "https://i.postimg.cc/x1qVgt6f/EUI_OIU_049.jpg", correctDiagnosis: "esophagogastric junction zline" },
-            { id: 50, image: "https://i.postimg.cc/RZqxGXgq/EUI_OIU_051.jpg", correctDiagnosis: "gastric antrum – normal" },
-            { id: 51, image: "https://i.postimg.cc/JztCKPpy/EUI_OIU_052.jpg", correctDiagnosis: "Normal Stomach" },
-            { id: 52, image: "https://i.postimg.cc/W1tcSX5z/EUI_OIU_050.jpg", correctDiagnosis: "esophagogastric junction zline" }
+            { id: 1, image: "https://files.catbox.moe/09svl3.jpg", correctDiagnosis: "Jaundice" },
+            { id: 2, image: "https://files.catbox.moe/1infa1.jpg", correctDiagnosis: "Caput medusae" },
+            { id: 3, image: "https://files.catbox.moe/j369rs.jpg", correctDiagnosis: "Gynecomastia" },
+            { id: 4, image: "https://files.catbox.moe/dlnewf.jpg", correctDiagnosis: "Palmar erythema" },
+            { id: 5, image: "https://files.catbox.moe/wxa02b.jpg", correctDiagnosis: "Normal duodenum" },
+            { id: 6, image: "https://files.catbox.moe/p8d4sd.jpg", correctDiagnosis: "Normal duodenum" },
+            { id: 7, image: "https://files.catbox.moe/wtrxhq.jpg", correctDiagnosis: "Duodenum ulcer" },
+            { id: 8, image: "https://files.catbox.moe/0mxo6d.jpg", correctDiagnosis: "Duodenal bulb" },
+            { id: 9, image: "https://files.catbox.moe/xzvu3h.jpg", correctDiagnosis: "Gastric ulcer" },
+            { id: 10, image: "https://files.catbox.moe/apqhga.jpg", correctDiagnosis: "Gastric ulcer" },
+            { id: 11, image: "https://files.catbox.moe/py0l50.jpg", correctDiagnosis: "Gastric ulcer" },
+            { id: 12, image: "https://files.catbox.moe/loiqoz.jpg", correctDiagnosis: "Gastric ulcer" },
+            { id: 13, image: "https://files.catbox.moe/4tn7xp.jpg", correctDiagnosis: "Ventricular Ectopic" },
+            { id: 14, image: "https://files.catbox.moe/4d6ffo.jpg", correctDiagnosis: "Ventricular Ectopic (Bigemini)" },
+            { id: 15, image: "https://files.catbox.moe/obnk8z.jpg", correctDiagnosis: "Ventricular Tachycardia" },
+            { id: 16, image: "https://files.catbox.moe/56u5li.jpg", correctDiagnosis: "First degree heart block" },
+            { id: 17, image: "https://files.catbox.moe/xd6t7h.jpg", correctDiagnosis: "Type-1 second degree heart block" },
+            { id: 18, image: "https://files.catbox.moe/1vuq4x.jpg", correctDiagnosis: "Type-2 second degree heart block" },
+            { id: 19, image: "https://files.catbox.moe/repb6z.jpg", correctDiagnosis: "3rd degree (complete heart block)" },
+            { id: 20, image: "https://files.catbox.moe/5uyfsz.png", correctDiagnosis: "Right bundle branch block" },
+            { id: 21, image: "https://files.catbox.moe/1labm8.png", correctDiagnosis: "Left bundle branch block" },
+            { id: 22, image: "https://files.catbox.moe/ss188t.jpg", correctDiagnosis: "Sick Sinus Syndrome" },
+            { id: 23, image: "https://files.catbox.moe/9vvcri.jpg", correctDiagnosis: "ST depression (Angina pectoris)" },
+            { id: 24, image: "https://files.catbox.moe/46ko6h.jpg", correctDiagnosis: "ST Elevation" },
+            { id: 25, image: "https://files.catbox.moe/nbxpxz.png", correctDiagnosis: "Sinus Tachycardia" },
+            { id: 26, image: "https://files.catbox.moe/gftwif.png", correctDiagnosis: "Sinus Bradycardia" },
+            { id: 27, image: "https://files.catbox.moe/fuzptz.jpg", correctDiagnosis: "Tonsillitis" },
+            { id: 28, image: "https://files.catbox.moe/yu9wl0.jpg", correctDiagnosis: "Diphtheria" },
+            { id: 29, image: "https://files.catbox.moe/faayfy.jpg", correctDiagnosis: "Bilateral Pneumonia" },
+            { id: 30, image: "https://files.catbox.moe/cxw9v0.jpg", correctDiagnosis: "Lobar Pneumonia" },
+            { id: 31, image: "https://files.catbox.moe/7b2txi.jpg", correctDiagnosis: "KUB renal stone" },
+            { id: 32, image: "https://files.catbox.moe/2ajb2r.jpg", correctDiagnosis: "Intravenous pyelogram" },
+            { id: 33, image: "https://files.catbox.moe/8qjsos.jpg", correctDiagnosis: "CT-scan of renal system" },
+            { id: 34, image: "https://files.catbox.moe/m7h25i.jpg", correctDiagnosis: "CT-scan of renal system" },
+            { id: 35, image: "https://files.catbox.moe/5bk30x.jpg", correctDiagnosis: "KUB Vesical stone" },
+            { id: 36, image: "https://files.catbox.moe/j4oxiw.jpg", correctDiagnosis: "Esophagogastric junction Z-line" },
+            { id: 37, image: "https://files.catbox.moe/q2dqdp.jpg", correctDiagnosis: "Esophagogastric junction Z-line" },
+            { id: 38, image: "https://files.catbox.moe/u1p13c.jpg", correctDiagnosis: "Gastric antrum - normal" },
+            { id: 39, image: "https://files.catbox.moe/trdd4c.jpg", correctDiagnosis: "Normal Stomach" },
+            { id: 40, image: "https://files.catbox.moe/p5v28e.jpg", correctDiagnosis: "Prostatic hypertrophy" },
+            { id: 41, image: "https://files.catbox.moe/r77uzf.jpg", correctDiagnosis: "Myocardial infarction" },
+            { id: 42, image: "https://files.catbox.moe/ixeofr.jpg", correctDiagnosis: "Myocardial infarction" },
+            { id: 43, image: "https://files.catbox.moe/u6kdo0.jpg", correctDiagnosis: "Atherosclerosis" },
+            { id: 44, image: "https://files.catbox.moe/94d9l7.jpg", correctDiagnosis: "Atrial ectopic" },
+            { id: 45, image: "https://files.catbox.moe/lcefhj.jpg", correctDiagnosis: "Atrial fibrillation" },
+            { id: 46, image: "https://files.catbox.moe/h9rheu.jpg", correctDiagnosis: "Angina Pectoris" },
+            { id: 47, image: "https://files.catbox.moe/xmktm0.jpg", correctDiagnosis: "Prinzmetal angine" },
+            { id: 48, image: "https://files.catbox.moe/kw8ezl.jpg", correctDiagnosis: "Bilateral renal stones" },
+            { id: 49, image: "https://files.catbox.moe/5d5qxp.jpg", correctDiagnosis: "Polycystic kidney" },
+            { id: 50, image: "https://files.catbox.moe/inakw5.jpg", correctDiagnosis: "Supra Ventricular Tachycardia" },
+            { id: 51, image: "https://files.catbox.moe/bg4xlp.jpg", correctDiagnosis: "Atrial ectopic" },
+            { id: 52, image: "https://files.catbox.moe/x3ep8k.jpg", correctDiagnosis: "Normal Sinus Rhythm" }
         ];
 
         let results = {};
         const appDiv = document.getElementById('app');
         let audioPlayer = new Audio();
+        audioPlayer.preload = "auto";
         let currentTrackIndex = 0;
         let isPlayerInitialized = false;
         
@@ -240,7 +241,7 @@
             if (isPlayerInitialized && !audioPlayer.paused) audioPlayer.pause();
             appDiv.innerHTML = `
                 <div class="flex-grow flex items-center justify-center p-4">
-                    <div class="bg-white shadow-xl rounded-xl p-8 max-w-md w-full text-center border-t-4 border-red-600">
+                    <div class="bg-white shadow-xl rounded-xl p-8 max-md w-full text-center border-t-4 border-red-600">
                         <svg class="mx-auto h-16 w-16 text-red-500 mb-4 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.332 16c-.77 1.333.192 3 1.732 3z"/>
                         </svg>
@@ -254,12 +255,13 @@
 
         function renderQuizScreen() {
             initializeAudioPlayer();
+            audioPlayer.play().catch(e => console.log("Autoplay active after interaction"));
+            
             shuffleArray(quizData); 
             let quizHTML = quizData.map((item, index) => `
                 <div id="card-${item.id}" class="bg-white shadow-lg rounded-xl p-5 mb-8 transition-shadow duration-300 hover:shadow-xl border border-gray-100">
                     <h2 class="text-xl font-semibold text-indigo-700 mb-4 border-b pb-2">الصورة رقم #${index + 1}</h2>
                     <div class="w-full flex justify-center mb-6">
-                        <!-- تم إضافة referrerpolicy لمنع حجب الصور من قبل موقع الرفع -->
                         <img src="${item.image}" 
                              referrerpolicy="no-referrer"
                              alt="صورة تشخيص" 
@@ -278,12 +280,13 @@
             appDiv.innerHTML = `
                 <header class="bg-white shadow-md p-4 mb-4">
                     <div class="container mx-auto max-w-4xl text-center">
-                        <h1 class="text-2xl md:text-3xl font-extrabold text-gray-800 logo-font uppercase tracking-wider">Abdulrahman Hassan</h1>
+                        <h1 class="text-2xl md:text-3xl font-extrabold text-gray-800 logo-font uppercase tracking-wider">Abdulrahman Hasan</h1>
                     </div>
                 </header>
                 <main class="container mx-auto max-w-4xl p-4 md:p-8 flex-grow">
                     <div class="bg-white shadow-xl rounded-xl p-4 mb-8 border-t-4 border-teal-500">
-                        <h2 class="text-center text-2xl font-bold text-gray-800 mb-2">غير مزاجك/ج اثناء التشخيص</h2>
+                        <!-- تم تعديل العبارة وتصغير الخط هنا -->
+                        <h2 class="text-center text-lg font-bold text-gray-800 mb-2">هواجيس خفيفة - غير مزاجك/ج اثناء التشخيص</h2>
                         <div class="flex flex-col space-y-3">
                             <p id="trackTitle" class="text-lg font-semibold text-teal-600 text-center truncate">...</p>
                             <div class="flex items-center space-x-2 w-full" dir="ltr">
@@ -318,10 +321,13 @@
                 statusDiv.innerHTML = `<p class="font-bold">الرجاء إدخال تشخيص أولاً.</p>`;
                 return;
             }
+            
             const normalize = (text) => text.toLowerCase().replace(/[\s\W_]/g, '').trim(); 
             const normalizedCorrect = normalize(correctDiagnosis);
             const normalizedUser = normalize(userInput);
+            
             let isCorrect = (normalizedUser === normalizedCorrect) || (normalizedCorrect.includes(normalizedUser) && normalizedUser.length > 5);
+            
             if (isCorrect) {
                 results[id] = true;
                 statusDiv.className = 'mt-4 p-3 rounded-lg bg-green-100 text-green-800 block border-l-4 border-green-500';
@@ -336,7 +342,11 @@
             updateQuizSummary();
         }
 
-        function clearStatus(id) { document.getElementById(`status-${id}`).classList.add('hidden'); }
+        function clearStatus(id) { 
+            const status = document.getElementById(`status-${id}`);
+            if(status) status.classList.add('hidden'); 
+        }
+        
         function updateQuizSummary() {
             const totalItems = quizData.length;
             const correctCount = Object.values(results).filter(r => r === true).length;
